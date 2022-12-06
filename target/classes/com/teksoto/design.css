@@ -1,0 +1,9 @@
+.light-black {
+    -fx-background-color: #282828;
+    -fx-text-fill: #ffffff;
+}
+
+.dark-black {
+    -fx-background-color: #1E1E1E;
+    -fx-text-fill: #ffffff;
+}

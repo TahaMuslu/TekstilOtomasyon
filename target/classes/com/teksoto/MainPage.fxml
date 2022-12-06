@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane focusTraversable="true" minHeight="900.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teksoto.MainPageController">
+   <left>
+      <VBox alignment="TOP_CENTER" styleClass="light-black" stylesheets="@design.css" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="personellerButton" mnemonicParsing="false" onAction="#personellerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Personeller">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="urunlerButton" mnemonicParsing="false" onAction="#urunlerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Ürünler">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="alimsatimlarButton" mnemonicParsing="false" onAction="#alimsatimlarButtonAction" prefHeight="40.0" prefWidth="120.0" text="Alım Satımlar">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="musterilervenakliyecilerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#musterilervenakliyecilerButtonAction" prefHeight="60.0" prefWidth="120.0" text="Müşteriler ve Nakliyeciler" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" />
+               </VBox.margin>
+            </Button>
+            <Button fx:id="ggButton" mnemonicParsing="false" onAction="#ggButtonAction" prefHeight="40.0" prefWidth="120.0" text="gg" />
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </left>
+   <top>
+      <HBox fx:id="topBar" alignment="CENTER_LEFT" onMouseDragged="#stageDrag" onMousePressed="#stagePressed" prefHeight="75.0" prefWidth="774.0" styleClass="dark-black" stylesheets="@design.css" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="25.0" left="25.0" top="25.0" />
+               </HBox.margin>
+               <image>
+                  <Image url="@../assets/computer.png" />
+               </image>
+            </ImageView>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textFill="#ffd900" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#shutdown" style="-fx-background-radius: 15;" text="X" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets bottom="100.0" right="10.0" />
+               </HBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Button>
+         </children>
+      </HBox>
+   </top>
+   <center>
+      <StackPane BorderPane.alignment="CENTER">
+         <children>
+            <TabPane fx:id="personellerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+               <tabs>
+                  <Tab text="Untitled Tab 1">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab 2">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <TabPane fx:id="urunlerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+               <tabs>
+                  <Tab text="Untitled Tab 3">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab 4">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <TabPane fx:id="alimsatimlarTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+               <tabs>
+                  <Tab text="Untitled Tab 5">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab 6">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <TabPane fx:id="musterilervenakliyecilerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+               <tabs>
+                  <Tab text="Untitled Tab 7">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab 8">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+            <TabPane fx:id="ggTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+               <tabs>
+                  <Tab text="Untitled Tab 9">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+                  <Tab text="Untitled Tab 10">
+                     <content>
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </StackPane>
+   </center>
+</BorderPane>
