@@ -6,6 +6,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -78,11 +80,25 @@
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <children>
-            <TabPane fx:id="personellerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+            <TabPane fx:id="personellerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
                <tabs>
                   <Tab text="Untitled Tab 1">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                           <content>
+                              <TableView fx:id="personelTablo" minHeight="721.0" minWidth="1020.0">
+                                <columns>
+                                  <TableColumn fx:id="pt_id" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="pt_isim" prefWidth="75.0" text="İsim" />
+                                    <TableColumn fx:id="pt_soyisim" prefWidth="75.0" text="Soyisim" />
+                                    <TableColumn fx:id="pt_sehir" prefWidth="75.0" text="Şehir" />
+                                    <TableColumn fx:id="pt_maas" prefWidth="75.0" text="Maaş" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </content></ScrollPane>
                      </content>
                   </Tab>
                   <Tab text="Untitled Tab 2">

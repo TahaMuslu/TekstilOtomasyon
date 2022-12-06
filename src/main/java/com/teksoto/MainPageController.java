@@ -1,9 +1,19 @@
 package com.teksoto;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import com.model.Deneme;
+
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
@@ -17,6 +27,7 @@ public class MainPageController {
 
     private double xOffset = 0;
     private double yOffset = 0;
+    private DatabaseConnection databaseConnection = new DatabaseConnection();
 
     @FXML
     private HBox topBar;
@@ -44,9 +55,55 @@ public class MainPageController {
     private TabPane ggTab;
 
     @FXML
+    private TableView<Deneme> personelTablo;
+    @FXML
+    private TableColumn<Deneme, Integer> pt_id;
+    @FXML
+    private TableColumn<Deneme, String> pt_isim;
+    @FXML
+    private TableColumn<Deneme, String> pt_soyisim;
+    @FXML
+    private TableColumn<Deneme, String> pt_sehir;
+    @FXML
+    private TableColumn<Deneme, Integer> pt_maas;
+
+    @FXML
     private void personellerButtonAction() {
         tabloKapat();
         personellerTab.setVisible(true);
+
+        ObservableList<Deneme> personelList = FXCollections.observableArrayList();
+        try {
+            pt_id.setCellValueFactory(new PropertyValueFactory<Deneme, Integer>("id"));
+            pt_isim.setCellValueFactory(new PropertyValueFactory<Deneme, String>("isim"));
+            pt_soyisim.setCellValueFactory(new PropertyValueFactory<Deneme, String>("soyisim"));
+            pt_sehir.setCellValueFactory(new PropertyValueFactory<Deneme, String>("sehir"));
+            pt_maas.setCellValueFactory(new PropertyValueFactory<Deneme, Integer>("maas"));
+
+        } catch (Exception e) {
+            // System.out.println(e.getMessage());
+        }
+
+        String sql = "SELECT * FROM deneme";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                personelList.add(new Deneme(
+                        resultSet.getInt("iddeneme"),
+                        resultSet.getString("isim"),
+                        resultSet.getString("soyisim"),
+                        resultSet.getString("sehir"),
+                        resultSet.getInt("maas")));
+            }
+            personelTablo.setItems(personelList);
+        } catch (Exception e) {
+            // System.out.println(e.getMessage());
+            // e.printStackTrace();
+            // e.getCause();
+        }
+
     }
 
     @FXML
