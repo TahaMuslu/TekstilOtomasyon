@@ -3,18 +3,20 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane focusTraversable="true" minHeight="900.0" minWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teksoto.MainPageController">
+<BorderPane focusTraversable="true" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teksoto.MainPageController">
    <left>
       <VBox alignment="TOP_CENTER" styleClass="light-black" stylesheets="@design.css" BorderPane.alignment="CENTER">
          <children>
@@ -23,6 +25,10 @@
                   <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                </VBox.margin>
             </Button>
+            <Button fx:id="kumaslarButton" mnemonicParsing="false" onAction="#kumaslarButtonAction" prefHeight="40.0" prefWidth="120.0" text="Kumaşlar">
+               <VBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" />
+               </VBox.margin></Button>
             <Button fx:id="urunlerButton" mnemonicParsing="false" onAction="#urunlerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Ürünler">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" />
@@ -38,7 +44,7 @@
                   <Insets bottom="30.0" left="30.0" right="30.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="ggButton" mnemonicParsing="false" onAction="#ggButtonAction" prefHeight="40.0" prefWidth="120.0" text="gg" />
+            <Button fx:id="tedarikcilerButton" mnemonicParsing="false" onAction="#tedarikcilerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Tedarikciler" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -76,78 +82,126 @@
       </HBox>
    </top>
    <center>
-      <StackPane BorderPane.alignment="CENTER">
+      <StackPane maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane fx:id="personellerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
-               <tabs>
-                  <Tab text="Untitled Tab 1">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="Untitled Tab 2">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
-            <TabPane fx:id="urunlerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
-               <tabs>
-                  <Tab text="Untitled Tab 3">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="Untitled Tab 4">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
-            <TabPane fx:id="alimsatimlarTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+            <TableView fx:id="personellerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0">
+              <columns>
+                <TableColumn fx:id="p_id" editable="false" prefWidth="-1.0" text="ID" />
+                  <TableColumn fx:id="p_ad" editable="false" prefWidth="-1.0" text="Ad" />
+                  <TableColumn fx:id="p_soyad" editable="false" prefWidth="-1.0" text="Soyad" />
+                  <TableColumn fx:id="p_iseBaslamaTarih" editable="false" minWidth="5.0" prefWidth="-1.0" text="İşe Başlama Tarihi" />
+                  <TableColumn fx:id="p_unvan" editable="false" prefWidth="-1.0" text="Ünvan" />
+                  <TableColumn fx:id="p_adres" editable="false" prefWidth="-1.0" text="Adres" />
+                  <TableColumn fx:id="p_sehir" editable="false" prefWidth="-1.0" text="Şehir" />
+                  <TableColumn fx:id="p_ulke" editable="false" minWidth="0.0" prefWidth="-1.0" text="Ülke" />
+                  <TableColumn fx:id="p_telefon" editable="false" prefWidth="-1.0" text="Telefon" />
+                  <TableColumn fx:id="p_dogumTarihi" editable="false" minWidth="0.0" prefWidth="-1.0" text="Doğum Tarihi" />
+                  <TableColumn fx:id="p_maas" editable="false" prefWidth="-1.0" text="Maaş" />
+                  <TableColumn fx:id="p_cinsiyet" editable="false" prefWidth="47.0" text="Cinsiyet" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView fx:id="kumaslarTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+               <columns>
+                  <TableColumn fx:id="k_id" prefWidth="75.0" text="ID" />
+                  <TableColumn fx:id="k_ad" prefWidth="75.0" text="Kumaş Adı" />
+                  <TableColumn fx:id="k_stok" prefWidth="75.0" text="Stok" />
+                  <TableColumn fx:id="k_tedarikciID" prefWidth="75.0" text="Tedarikçi ID" />
+                  <TableColumn fx:id="k_birimFiyat" prefWidth="75.0" text="Birim Fiyat" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TableView fx:id="urunlerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+               <columns>
+                  <TableColumn fx:id="u_id" prefWidth="75.0" text="ID" />
+                  <TableColumn fx:id="u_ad" prefWidth="75.0" text="Ürün Adı" />
+                  <TableColumn fx:id="u_kumasID" prefWidth="75.0" text="Kumaş ID" />
+                  <TableColumn fx:id="u_paketMiktar" prefWidth="75.0" text="Paketteki Miktar" />
+                  <TableColumn fx:id="u_paketFiyat" prefWidth="75.0" text="Paket Fiyatı" />
+                  <TableColumn fx:id="u_stok" prefWidth="75.0" text="Stok" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <TabPane fx:id="alimsatimlarTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
                <tabs>
                   <Tab text="Untitled Tab 5">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" />
                      </content>
                   </Tab>
                   <Tab text="Untitled Tab 6">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                        <Pane prefHeight="200.0" prefWidth="200.0" />
                      </content>
                   </Tab>
                </tabs>
             </TabPane>
-            <TabPane fx:id="musterilervenakliyecilerTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+            <TabPane fx:id="musterilervenakliyecilerTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
                <tabs>
-                  <Tab text="Untitled Tab 7">
+                  <Tab fx:id="musterilerTab" text="Müşteriler">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                        <Pane>
+                           <children>
+                              <TableView fx:id="musterilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="721.0" minWidth="1020.0">
+                                 <columns>
+                                    <TableColumn fx:id="m_id" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="m_ad" prefWidth="75.0" text="Ad" />
+                                    <TableColumn fx:id="m_soyad" prefWidth="75.0" text="Soyad" />
+                                    <TableColumn fx:id="m_unvan" prefWidth="75.0" text="Ünvan" />
+                                    <TableColumn fx:id="m_adres" prefWidth="75.0" text="Adres" />
+                                    <TableColumn fx:id="m_sehir" prefWidth="75.0" text="Şehir" />
+                                    <TableColumn fx:id="m_ulke" prefWidth="75.0" text="Ülke" />
+                                    <TableColumn fx:id="m_telefon" prefWidth="75.0" text="Telefon" />
+                                    <TableColumn fx:id="m_sirketAd" prefWidth="75.0" text="Şirket Adı" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </Pane>
                      </content>
                   </Tab>
-                  <Tab text="Untitled Tab 8">
+                  <Tab fx:id="nakliyecilerTab" text="Nakliyeciler">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
+                        <Pane>
+                           <children>
+                              <TableView fx:id="nakliyecilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="721.0" minWidth="1020.0">
+                                 <columns>
+                                    <TableColumn fx:id="n_id" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="n_sirketAd" prefWidth="75.0" text="Şirket Adı" />
+                                    <TableColumn fx:id="n_telefon" prefWidth="75.0" text="Telefon" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </Pane>
                      </content>
                   </Tab>
                </tabs>
             </TabPane>
-            <TabPane fx:id="ggTab" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
-               <tabs>
-                  <Tab text="Untitled Tab 9">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-                  <Tab text="Untitled Tab 10">
-                     <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0" />
-                     </content>
-                  </Tab>
-               </tabs>
-            </TabPane>
+            <TableView fx:id="tedarikcilerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+               <columns>
+                  <TableColumn fx:id="t_id" prefWidth="75.0" text="ID" />
+                  <TableColumn fx:id="t_sirketAd" prefWidth="75.0" text="Şirket Adı" />
+                  <TableColumn fx:id="t_webSayfasi" prefWidth="75.0" text="Web Sayfası" />
+                  <TableColumn fx:id="t_adres" prefWidth="75.0" text="Adres" />
+                  <TableColumn fx:id="t_sehir" prefWidth="75.0" text="Şehir" />
+                  <TableColumn fx:id="t_ulke" prefWidth="75.0" text="Ülke" />
+                  <TableColumn fx:id="t_telefon" prefWidth="75.0" text="Telefon" />
+               </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
          </children>
       </StackPane>
    </center>
