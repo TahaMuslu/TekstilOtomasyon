@@ -3,16 +3,13 @@ package com.teksoto;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-import com.model.Personel;
+import com.model.*;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -50,15 +47,51 @@ public class MainPageController {
     @FXML
     private TableView<Personel> personellerTablo;
     @FXML
-    private TableView kumaslarTablo;
+    private TableView<Kumas> kumaslarTablo;
     @FXML
-    private TableView urunlerTablo;
+    private TableView<Urunler> urunlerTablo;
+    @FXML
+    private TableView<Musteri> musterilerTablo;
+    @FXML
+    private TableView<Nakliyeci> nakliyecilerTablo;
+    @FXML
+    private Tab musterilerTab;
+    @FXML
+    private Tab nakliyecilerTab;
     @FXML
     private TabPane alimsatimlarTab;
     @FXML
     private TabPane musterilervenakliyecilerTab;
     @FXML
-    private TableView tedarikcilerTablo;
+    private TableView<Tedarikciler> tedarikcilerTablo;
+
+    // Müşteriler Tablosu
+    @FXML
+    private TableColumn<Musteri, Integer> m_id;
+    @FXML
+    private TableColumn<Musteri, String> m_ad;
+    @FXML
+    private TableColumn<Musteri, String> m_soyad;
+    @FXML
+    private TableColumn<Musteri, String> m_unvan;
+    @FXML
+    private TableColumn<Musteri, String> m_adres;
+    @FXML
+    private TableColumn<Musteri, String> m_sehir;
+    @FXML
+    private TableColumn<Musteri, String> m_ulke;
+    @FXML
+    private TableColumn<Musteri, String> m_telefon;
+    @FXML
+    private TableColumn<Musteri, String> m_sirketAd;
+
+    // Nakliyeciler Tablosu
+    @FXML
+    private TableColumn<Nakliyeci, Integer> n_id;
+    @FXML
+    private TableColumn<Nakliyeci, String> n_sirketAd;
+    @FXML
+    private TableColumn<Nakliyeci, String> n_telefon;
 
     // Personeller Tablosu
     @FXML
@@ -85,6 +118,48 @@ public class MainPageController {
     private TableColumn<Personel, Integer> p_maas;
     @FXML
     private TableColumn<Personel, String> p_cinsiyet;
+
+    //Kumaslar Tablosu
+    @FXML
+    private TableColumn<Kumas, Integer> k_id;
+    @FXML
+    private TableColumn<Kumas, String> k_ad;
+    @FXML
+    private TableColumn<Kumas, Integer> k_stok;
+    @FXML
+    private TableColumn<Kumas, Integer> k_tedarikciID;
+    @FXML
+    private TableColumn<Kumas, Integer> k_birimFiyat;
+
+    //Urunler Tablosu
+    @FXML
+    private TableColumn<Urunler, Integer> u_id;
+    @FXML
+    private TableColumn<Urunler, String> u_ad;
+    @FXML
+    private TableColumn<Urunler, Integer> u_kumasID;
+    @FXML
+    private TableColumn<Urunler, Integer> u_paketMiktar;
+    @FXML
+    private TableColumn<Urunler, Integer> u_paketFiyat;
+    @FXML
+    private TableColumn<Urunler, Integer> u_stok;
+
+    //Tedarikciler Tablosu
+    @FXML
+    private TableColumn<Tedarikciler, Integer> t_id;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_sirketAd;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_webSayfasi;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_adres;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_sehir;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_ulke;
+    @FXML
+    private TableColumn<Tedarikciler, String> t_telefon;
 
     // Personeller Tablosu
     @FXML
@@ -132,7 +207,6 @@ public class MainPageController {
             e.printStackTrace();
             e.getCause();
         }
-
     }
 
     // Kumaşlar Tablosu
@@ -140,6 +214,33 @@ public class MainPageController {
     private void kumaslarButtonAction() {
         tabloKapat();
         kumaslarTablo.setVisible(true);
+
+        ObservableList<Kumas> kumasList = FXCollections.observableArrayList();
+
+        k_id.setCellValueFactory(new PropertyValueFactory<Kumas, Integer>("kumas_id"));
+        k_ad.setCellValueFactory(new PropertyValueFactory<Kumas, String>("kumas_ad"));
+        k_stok.setCellValueFactory(new PropertyValueFactory<Kumas, Integer>("stok"));
+        k_tedarikciID.setCellValueFactory(new PropertyValueFactory<Kumas, Integer>("tedarikci_id"));
+        k_birimFiyat.setCellValueFactory(new PropertyValueFactory<Kumas, Integer>("birim_fiyat"));
+
+        String sql = "SELECT * FROM kumaslar";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                kumasList.add(new Kumas(
+                        resultSet.getInt("kumas_id"),
+                        resultSet.getString("kumas_ad"),
+                        resultSet.getInt("stok"),
+                        resultSet.getInt("tedarikci_id"),
+                        resultSet.getInt("birim_fiyat")));
+            }
+            kumaslarTablo.setItems(kumasList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     // Ürünler Tablosu
@@ -147,6 +248,35 @@ public class MainPageController {
     private void urunlerButtonAction() {
         tabloKapat();
         urunlerTablo.setVisible(true);
+
+        ObservableList<Urunler> urunList = FXCollections.observableArrayList();
+
+        u_id.setCellValueFactory(new PropertyValueFactory<Urunler, Integer>("urun_id"));
+        u_ad.setCellValueFactory(new PropertyValueFactory<Urunler, String>("urun_adi"));
+        u_kumasID.setCellValueFactory(new PropertyValueFactory<Urunler, Integer>("kumas_id"));
+        u_paketMiktar.setCellValueFactory(new PropertyValueFactory<Urunler, Integer>("paket_miktar"));
+        u_paketFiyat.setCellValueFactory(new PropertyValueFactory<Urunler, Integer>("paket_fiyat"));
+        u_stok.setCellValueFactory(new PropertyValueFactory<Urunler, Integer>("stok"));
+
+        String sql = "SELECT * FROM urunler";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                urunList.add(new Urunler(
+                        resultSet.getInt("urun_id"),
+                        resultSet.getString("urun_adi"),
+                        resultSet.getInt("kumas_id"),
+                        resultSet.getInt("paket_miktar"),
+                        resultSet.getInt("paket_fiyat"),
+                        resultSet.getInt("stok")));
+            }
+            urunlerTablo.setItems(urunList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     // Alım-Satım Tablosu
@@ -161,6 +291,65 @@ public class MainPageController {
     private void musterilervenakliyecilerButtonAction() {
         tabloKapat();
         musterilervenakliyecilerTab.setVisible(true);
+
+        ObservableList<Musteri> musteriList = FXCollections.observableArrayList();
+        ObservableList<Nakliyeci> nakliyeciList = FXCollections.observableArrayList();
+
+        m_id.setCellValueFactory(new PropertyValueFactory<Musteri, Integer>("musteri_id"));
+        m_ad.setCellValueFactory(new PropertyValueFactory<Musteri, String>("ad"));
+        m_soyad.setCellValueFactory(new PropertyValueFactory<Musteri, String>("soyad"));
+        m_unvan.setCellValueFactory(new PropertyValueFactory<Musteri, String>("unvan"));
+        m_adres.setCellValueFactory(new PropertyValueFactory<Musteri, String>("adres"));
+        m_sehir.setCellValueFactory(new PropertyValueFactory<Musteri, String>("sehir"));
+        m_ulke.setCellValueFactory(new PropertyValueFactory<Musteri, String>("ulke"));
+        m_telefon.setCellValueFactory(new PropertyValueFactory<Musteri, String>("telefon"));
+        m_sirketAd.setCellValueFactory(new PropertyValueFactory<Musteri, String>("sirket_ad"));
+
+        n_id.setCellValueFactory(new PropertyValueFactory<Nakliyeci, Integer>("nakliyeci_id"));
+        n_sirketAd.setCellValueFactory(new PropertyValueFactory<Nakliyeci, String>("sirket_ad"));
+        n_telefon.setCellValueFactory(new PropertyValueFactory<Nakliyeci, String>("telefon"));
+
+        String sql1 = "SELECT * FROM musteriler";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql1);
+            while (resultSet.next()) {
+                musteriList.add(new Musteri(
+                        resultSet.getInt("musteri_id"),
+                        resultSet.getString("ad"),
+                        resultSet.getString("soyad"),
+                        resultSet.getString("unvan"),
+                        resultSet.getString("adres"),
+                        resultSet.getString("sehir"),
+                        resultSet.getString("ulke"),
+                        resultSet.getString("telefon"),
+                        resultSet.getString("sirket_ad")));
+            }
+            musterilerTablo.setItems(musteriList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+        String sql2 = "SELECT * FROM nakliyeciler";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql2);
+            while (resultSet.next()) {
+                nakliyeciList.add(new Nakliyeci(
+                        resultSet.getInt("nakliyeci_id"),
+                        resultSet.getString("sirket_ad"),
+                        resultSet.getString("telefon")));
+            }
+            nakliyecilerTablo.setItems(nakliyeciList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+        musterilerTab.setContent(musterilerTablo);
+        nakliyecilerTab.setContent(nakliyecilerTablo);
+
     }
 
     // Tedarikçiler Tablosu
@@ -168,6 +357,37 @@ public class MainPageController {
     private void tedarikcilerButtonAction() {
         tabloKapat();
         tedarikcilerTablo.setVisible(true);
+
+        ObservableList<Tedarikciler> tedarikciList = FXCollections.observableArrayList();
+
+        t_id.setCellValueFactory(new PropertyValueFactory<Tedarikciler, Integer>("tedarikci_id"));
+        t_sirketAd.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("sirket_adi"));
+        t_webSayfasi.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("web_sayfasi"));
+        t_adres.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("adres"));
+        t_sehir.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("sehir"));
+        t_ulke.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("ulke"));
+        t_telefon.setCellValueFactory(new PropertyValueFactory<Tedarikciler, String>("telefon"));
+
+        String sql = "SELECT * FROM tedarikciler";
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                tedarikciList.add(new Tedarikciler(
+                        resultSet.getInt("tedarikci_id"),
+                        resultSet.getString("sirket_adi"),
+                        resultSet.getString("web_sayfasi"),
+                        resultSet.getString("adres"),
+                        resultSet.getString("sehir"),
+                        resultSet.getString("ulke"),
+                        resultSet.getString("telefon")));
+            }
+            tedarikcilerTablo.setItems(tedarikciList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     // Tabloları Kapatma

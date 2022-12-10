@@ -14,7 +14,7 @@ public class DatabaseConnection {
     public Connection getConnection() {
         String url = "jdbc:mysql://localhost/tekstil_otomasyonu";
         String user = "root";
-        String password = "1234";
+        String password = "65655396129";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             databaseLink = DriverManager.getConnection(url, user, password);
