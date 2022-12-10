@@ -2,20 +2,25 @@ package com.teksoto;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import com.model.Personel;
+import com.model.*;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class MainPageController {
     /*
@@ -86,6 +91,13 @@ public class MainPageController {
     @FXML
     private TableColumn<Personel, String> p_cinsiyet;
 
+    // Alim-Satim Tabları
+    // Satimlar
+    @FXML
+    private Accordion satimlarAccordion;
+    @FXML
+    private Accordion alimlarAccordion;
+
     // Personeller Tablosu
     @FXML
     private void personellerButtonAction() {
@@ -154,6 +166,115 @@ public class MainPageController {
     private void alimsatimlarButtonAction() {
         tabloKapat();
         alimsatimlarTab.setVisible(true);
+        satimlarOlustur();
+        alimlarOlustur();
+
+    }
+
+    private void satimlarOlustur() {
+        // Satimlar Tablosu
+        ObservableList<Satislar> satislarList = FXCollections.observableArrayList();
+        ObservableList<SatisDetay> satisDetayList = FXCollections.observableArrayList();
+
+        try {
+            // İlk Sorgu
+            String sql = "SELECT * FROM tekstil_otomasyonu.satislar s INNER JOIN tekstil_otomasyonu.musteriler m on s.musteri_id=m.musteri_id ORDER BY satis_tarihi;";
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+
+                satislarList.add(new Satislar(
+                        resultSet.getInt("satis_id"),
+                        resultSet.getInt("musteri_id"),
+                        resultSet.getString("satis_tarihi"),
+                        resultSet.getInt("nakliye_ucreti"),
+                        resultSet.getInt("nakliyeci_id")));
+
+                String sql2 = "SELECT * FROM tekstil_otomasyonu.satis_detay " + "WHERE satis_id="
+                        + satislarList.get(satislarList.size() - 1).getSatis_id() + ";";
+                Statement statement2 = databaseConnection.getConnection().createStatement();
+                ResultSet resultSet2 = statement2.executeQuery(sql2);
+
+                while (resultSet2.next()) {
+                    satisDetayList.add(new SatisDetay(
+                            resultSet2.getInt("satis_id"),
+                            resultSet2.getInt("miktar"),
+                            resultSet2.getInt("urun_id")));
+                }
+                TableView<SatisDetay> table = new TableView<SatisDetay>();
+                tableViewSablon(table, satisDetayList);
+                satisDetayList.clear();
+
+                Pane pane = new Pane();
+                pane.getChildren().add(table);
+
+                // Titled Pane Şablonu
+                TitledPane sablon = new TitledPane(
+                        "{ID: " + resultSet.getInt("satis_id") + "}  -  " + resultSet.getString("satis_tarihi") + " - "
+                                + resultSet.getString("ad") + " "
+                                + resultSet.getString("soyad"),
+                        pane);
+                sablon.setId(resultSet.getString("satis_id"));
+                satimlarAccordion.getPanes().add(sablon);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        // satimlarAccordion.getPanes().get(0).isExpanded();
+    }
+
+    private void alimlarOlustur() {
+        // Satimlar Tablosu
+        ObservableList<SatinAlimlar> satinAlimlarList = FXCollections.observableArrayList();
+        ObservableList<SatinAlimDetay> satinAlimDetayList = FXCollections.observableArrayList();
+
+        try {
+            // İlk Sorgu
+            String sql = "SELECT * FROM tekstil_otomasyonu.satin_alimlar s INNER JOIN tekstil_otomasyonu.tedarikciler t ON s.tedarikci_id=t.tedarikci_id ORDER BY satin_alim_tarih;";
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+
+                satinAlimlarList.add(new SatinAlimlar(
+                        resultSet.getInt("satin_alim_id"),
+                        resultSet.getInt("tedarikci_id"),
+                        resultSet.getString("satin_alim_tarih")));
+
+                String sql2 = "SELECT * FROM tekstil_otomasyonu.satin_alim_detay " + "WHERE satin_alim_id="
+                        + satinAlimlarList.get(satinAlimlarList.size() - 1).getSatin_alim_id() + ";";
+                Statement statement2 = databaseConnection.getConnection().createStatement();
+                ResultSet resultSet2 = statement2.executeQuery(sql2);
+
+                while (resultSet2.next()) {
+                    satinAlimDetayList.add(new SatinAlimDetay(
+                            resultSet2.getInt("satin_alim_id"),
+                            resultSet2.getInt("kumas_id"),
+                            resultSet2.getInt("miktar")));
+                }
+                TableView<SatinAlimDetay> table = new TableView<SatinAlimDetay>();
+                tableViewSablon2(table, satinAlimDetayList);
+                satinAlimDetayList.clear();
+
+                Pane pane = new Pane();
+                pane.getChildren().add(table);
+
+                // Titled Pane Şablonu
+                TitledPane sablon = new TitledPane(
+                        "{ID: " + resultSet.getInt("satin_alim_id") + "}  -  " + resultSet.getString("satin_alim_tarih")
+                                + " - "
+                                + resultSet.getString("sirket_adi"),
+                        pane);
+                sablon.setId(resultSet.getString("satin_alim_id"));
+                alimlarAccordion.getPanes().add(sablon);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
     }
 
     // Müşteriler ve Nakliyeciler Tablosu
@@ -197,6 +318,52 @@ public class MainPageController {
     @FXML
     private void shutdown() {
         Platform.exit();
+    }
+
+    private void tableViewSablon(TableView<SatisDetay> sablon, ObservableList<SatisDetay> satisDetayList) {
+        // Satışlar Tablosu Şablonu
+        TableColumn<SatisDetay, Integer> kol1 = new TableColumn<SatisDetay, Integer>("satis_id");
+        TableColumn<SatisDetay, Integer> kol2 = new TableColumn<SatisDetay, Integer>("miktar");
+        TableColumn<SatisDetay, Integer> kol3 = new TableColumn<SatisDetay, Integer>("urun_id");
+        kol1.setText("Satış ID");
+        kol2.setText("Miktar");
+        kol3.setText("Ürün ID");
+        kol1.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("satis_id"));
+        kol2.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("miktar"));
+        kol3.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("urun_id"));
+        sablon.getColumns().add(kol1);
+        sablon.getColumns().add(kol2);
+        sablon.getColumns().add(kol3);
+        sablon.setMinHeight(300);
+        sablon.setMinWidth(1018);
+        sablon.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ObservableList<SatisDetay> veriler = FXCollections.observableArrayList();
+        veriler.addAll(satisDetayList);
+        sablon.setItems(veriler);
+
+    }
+
+    private void tableViewSablon2(TableView<SatinAlimDetay> sablon, ObservableList<SatinAlimDetay> satinAlimDetayList) {
+        // Satin Alimlar Tablosu Şablonu
+        TableColumn<SatinAlimDetay, Integer> kol1 = new TableColumn<SatinAlimDetay, Integer>("satin_alim_id");
+        TableColumn<SatinAlimDetay, Integer> kol2 = new TableColumn<SatinAlimDetay, Integer>("kumas_id");
+        TableColumn<SatinAlimDetay, Integer> kol3 = new TableColumn<SatinAlimDetay, Integer>("miktar");
+        kol1.setText("Satın Alım ID");
+        kol2.setText("Kumaş ID");
+        kol3.setText("Miktar");
+        kol1.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("satin_alim_id"));
+        kol2.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("kumas_id"));
+        kol3.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("miktar"));
+        sablon.getColumns().add(kol1);
+        sablon.getColumns().add(kol2);
+        sablon.getColumns().add(kol3);
+        sablon.setMinHeight(300);
+        sablon.setMinWidth(1018);
+        sablon.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        ObservableList<SatinAlimDetay> veriler = FXCollections.observableArrayList();
+        veriler.addAll(satinAlimDetayList);
+        sablon.setItems(veriler);
+
     }
 
 }
