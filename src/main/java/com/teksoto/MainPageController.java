@@ -8,12 +8,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 
 public class MainPageController {
-    /*
-     * @FXML
-     * private void switchToSecondary() throws IOException {
-     * App.setRoot("secondary");
-     * }
-     */
 
     private double xOffset = 0;
     private double yOffset = 0;
