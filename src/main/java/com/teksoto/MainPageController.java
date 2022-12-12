@@ -593,18 +593,216 @@ public class MainPageController implements Initializable {
     }
 
     private void musteriEkle() {
+        String[] istenenler = { "Ad:", "Soyad:", "Unvan:", "Adres*:", "Şehir*:", "Ulke*:", "Telefon:", "Şirket Ad*:"};
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields);
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                String sql = "INSERT INTO nakliyeciler (ad, soyad, unvan, adres, sehir, ulke, telefon, sirket_ad) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void nakliyeciEkle() {
+        String[] istenenler = { "Şirket Adı*:", "Telefon:"};
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields);
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                String sql = "INSERT INTO nakliyeciler (sirket_ad, telefon) VALUES (?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void tedarikciEkle() {
+        String[] istenenler = { "Şirket Adı*:", "Web Sayfası:", "Adres:", "Şehir:", "Ülke:", "Telefon*:"};
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields);
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                String sql = "INSERT INTO tedarikciler (sirket_adi, web_sayfasi, adres, sehir, ulke, telefon) VALUES (?, ?, ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void urunEkle() {
+        String[] istenenler = { "Ürün Adı*:", "Kumaş ID*:", "Paket Miktarı*:", "Paket Fiyatı*:", "Stok"};
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields);
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                String sql = "INSERT INTO urunler (urun_adi, kumas_id, paket_miktar, paket_fiyat, stok) VALUES (?, ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void kumasEkle() {
+        String[] istenenler = { "Kumaş Adı*:", "Stok*:", "Tedarikci ID*:", "Birim Fiyatı*:" };
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Kumas Ekleme", istenenler, textFields);
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+
+                String sql = "INSERT INTO kumaslar (kumas_ad, stok, tedarikci_id, birim_fiyat) VALUES (?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    kumaslarButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    kumaslarButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
     }
 
     private void personelEkle() {
@@ -677,25 +875,266 @@ public class MainPageController implements Initializable {
     }
 
     private void tedarikciSil() {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(tedarikcilerTablo.getSelectionModel().getSelectedItem().getSirket_adi()
+                        + " isimli tedarikciyi silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM tedarikciler WHERE tedarikci_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            tedarikcilerTablo.getSelectionModel().getSelectedItem().getTedarikci_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
     }
 
     private void nakliyeciSil() {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(nakliyecilerTablo.getSelectionModel().getSelectedItem().getNakliyeci_id()
+                        + " isimli nakliyeciyi silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM nakliyeciler WHERE nakliyeci_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            nakliyecilerTablo.getSelectionModel().getSelectedItem().getNakliyeci_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
     }
 
     private void musteriSil() {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(musterilerTablo.getSelectionModel().getSelectedItem().getSirket_ad()
+                        + " isimli şirketi silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM musteriler WHERE musteri_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            musterilerTablo.getSelectionModel().getSelectedItem().getMusteri_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        App.setRoot(vBox, 500, 200);
     }
 
     private void faturaSil() {
     }
 
     private void urunSil() {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(urunlerTablo.getSelectionModel().getSelectedItem().getUrun_adi()
+                        + " isimli ürünü silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM urunler WHERE urun_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            urunlerTablo.getSelectionModel().getSelectedItem().getUrun_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
     }
 
     private void kumasSil() {
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(kumaslarTablo.getSelectionModel().getSelectedItem().getKumas_ad()
+                        + " isimli kumaşı silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM kumaslar WHERE kumas_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            kumaslarTablo.getSelectionModel().getSelectedItem().getKumas_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    kumaslarButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    kumaslarButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
+
     }
 
     private void personelSil() {
-
         VBox vBox = new VBox();
         HBox hBox = new HBox();
         vBox.setAlignment(Pos.CENTER);
@@ -770,18 +1209,319 @@ public class MainPageController implements Initializable {
     }
 
     private void tedarikciGuncelle() {
+        String[] istenenler = { "Şirket Adı*:", "Web Sayfası:", "Adres:", "Şehir:", "Ülke:", "Telefon*:"};
+        String[] textFields = new String[istenenler.length];
+
+        String sql = "SELECT * FROM tedarikciler WHERE tedarikci_id = "
+                + tedarikcilerTablo.getSelectionModel().getSelectedItem().getTedarikci_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("sirket_adi");
+                textFields[1] = resultSet.getString("web_sayfasi");
+                textFields[2] = resultSet.getString("adres");
+                textFields[3] = resultSet.getString("sehir");
+                textFields[4] = resultSet.getString("ulke");
+                textFields[5] = resultSet.getString("telefon");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE tedarikciler SET sirket_adi = ?, web_sayfasi = ?, adres = ?, sehir = ?, ulke = ?, telefon = ? WHERE tedarikci_id = "
+                        + tedarikcilerTablo.getSelectionModel().getSelectedItem().getTedarikci_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    tedarikcilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void nakliyeciGuncelle() {
+        String[] istenenler = { "Şirket Adı*:", "Telefon:"};
+        String[] textFields = new String[istenenler.length];
+
+        String sql = "SELECT * FROM nakliyeciler WHERE nakliyeci_id = "
+                + nakliyecilerTablo.getSelectionModel().getSelectedItem().getNakliyeci_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("sirket_ad");
+                textFields[1] = resultSet.getString("telefon");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE nakliyeciler SET sirket_ad = ?, telefon = ?, WHERE nakliyeci_id = "
+                        + nakliyecilerTablo.getSelectionModel().getSelectedItem().getNakliyeci_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
     }
 
     private void musteriGuncelle() {
+        String[] istenenler = { "Ad:", "Soyad:", "Unvan:", "Adres*:", "Şehir*:", "Ulke*:", "Telefon:", "Şirket Ad*:"};
+        String[] textFields = new String[istenenler.length];
+
+        String sql = "SELECT * FROM musteriler WHERE musteri_id = "
+                + musterilerTablo.getSelectionModel().getSelectedItem().getMusteri_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("ad");
+                textFields[1] = resultSet.getString("soyad");
+                textFields[2] = resultSet.getString("unvan");
+                textFields[3] = resultSet.getString("adres");
+                textFields[4] = resultSet.getString("sehir");
+                textFields[5] = resultSet.getString("ulke");
+                textFields[6] = resultSet.getString("telefon");
+                textFields[7] = resultSet.getString("sirket_ad");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE musteriler SET ad = ?, soyad = ?, unvan = ?, adres = ?, sehir = ?, ulke = ?, telefon = ?, sirket_ad = ? WHERE musteri_id = "
+                        + musterilerTablo.getSelectionModel().getSelectedItem().getMusteri_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    musterilervenakliyecilerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
     }
 
     private void urunGuncelle() {
+        String[] istenenler = { "Ürün Adı*:", "Kumaş ID*:", "Paket Miktarı*:", "Paket Fiyatı*:", "Stok"};
+        String[] textFields = new String[istenenler.length];
+
+        String sql = "SELECT * FROM urunler WHERE urun_id = "
+                + urunlerTablo.getSelectionModel().getSelectedItem().getUrun_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("urun_adi");
+                textFields[1] = resultSet.getString("kumas_id");
+                textFields[2] = resultSet.getString("paket_miktar");
+                textFields[3] = resultSet.getString("paket_fiyat");
+                textFields[4] = resultSet.getString("stok");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE urunler SET urun_adi = ?, kumas_id = ?, paket_miktar = ?, paket_fiyat = ?, stok = ? WHERE urun_id = "
+                        + urunlerTablo.getSelectionModel().getSelectedItem().getUrun_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    urunlerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void kumasGuncelle() {
+        String[] istenenler = { "Kumaş Adı*:", "Stok*:", "Tedarikci ID*:", "Birim Fiyatı*:" };
+        String[] textFields = new String[istenenler.length];
+        String sql = "SELECT * FROM kumaslar WHERE kumas_id = "
+                + kumaslarTablo.getSelectionModel().getSelectedItem().getKumas_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("kumas_ad");
+                textFields[1] = resultSet.getString("stok");
+                textFields[2] = resultSet.getString("tedarikci_id");
+                textFields[3] = resultSet.getString("birim_fiyat");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Kumaş Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE kumaslar SET kumas_ad = ?, stok = ?, tedarikci_id = ?, birim_fiyat = ? WHERE kumas_id = "
+                        + kumaslarTablo.getSelectionModel().getSelectedItem().getKumas_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    kumaslarButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
     }
 
     private void personelGuncelle() {
