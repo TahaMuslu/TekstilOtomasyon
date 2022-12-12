@@ -1,27 +1,39 @@
 package com.teksoto;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ResourceBundle;
+
 import com.model.*;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Accordion;
+import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-public class MainPageController {
+public class MainPageController implements Initializable {
 
     private double xOffset = 0;
     private double yOffset = 0;
     private DatabaseConnection databaseConnection = new DatabaseConnection();
 
+    // Üst Bar
     @FXML
     private HBox topBar;
 
@@ -115,8 +127,7 @@ public class MainPageController {
     @FXML
     private TableColumn<Personel, String> p_cinsiyet;
 
-    // Alim-Satim Tabları
-    // Satimlar
+    // Alim-Satim Accordion
     @FXML
     private Accordion satimlarAccordion;
     @FXML
@@ -164,11 +175,24 @@ public class MainPageController {
     @FXML
     private TableColumn<Tedarikciler, String> t_telefon;
 
+    // Veri Ekleme Silme Güncelleme
+    @FXML
+    private Button ekleButton;
+    @FXML
+    private Button silButton;
+    @FXML
+    private Button guncelleButton;
+
     // Personeller Tablosu
     @FXML
     private void personellerButtonAction() {
         tabloKapat();
         personellerTablo.setVisible(true);
+
+        ekleButton.setText("Personel Ekle");
+        silButton.setText("Personel Sil");
+        guncelleButton.setText("Personel Güncelle");
+        buttonAc();
 
         ObservableList<Personel> personelList = FXCollections.observableArrayList();
 
@@ -218,6 +242,11 @@ public class MainPageController {
         tabloKapat();
         kumaslarTablo.setVisible(true);
 
+        ekleButton.setText("Kumaş Ekle");
+        silButton.setText("Kumaş Sil");
+        guncelleButton.setText("Kumaş Güncelle");
+        buttonAc();
+
         ObservableList<Kumas> kumasList = FXCollections.observableArrayList();
 
         k_id.setCellValueFactory(new PropertyValueFactory<Kumas, Integer>("kumas_id"));
@@ -251,6 +280,11 @@ public class MainPageController {
     private void urunlerButtonAction() {
         tabloKapat();
         urunlerTablo.setVisible(true);
+
+        ekleButton.setText("Ürün Ekle");
+        silButton.setText("Ürün Sil");
+        guncelleButton.setText("Ürün Güncelle");
+        buttonAc();
 
         ObservableList<Urunler> urunList = FXCollections.observableArrayList();
 
@@ -289,6 +323,11 @@ public class MainPageController {
         alimsatimlarTab.setVisible(true);
         satimlarOlustur();
         alimlarOlustur();
+
+        ekleButton.setText("Fatura Kes");
+        silButton.setText("Fatura Sil");
+        buttonAc();
+        guncelleButton.setVisible(false);
 
     }
 
@@ -404,6 +443,12 @@ public class MainPageController {
         tabloKapat();
         musterilervenakliyecilerTab.setVisible(true);
 
+        if (musterilervenakliyecilerTab.getTabs().get(0).isSelected())
+            musterilerAction();
+        else
+            nakliyecilerAction();
+        buttonAc();
+
         ObservableList<Musteri> musteriList = FXCollections.observableArrayList();
         ObservableList<Nakliyeci> nakliyeciList = FXCollections.observableArrayList();
 
@@ -470,6 +515,11 @@ public class MainPageController {
         tabloKapat();
         tedarikcilerTablo.setVisible(true);
 
+        ekleButton.setText("Tedarikçi Ekle");
+        silButton.setText("Tedarikçi Sil");
+        guncelleButton.setText("Tedarikçi Güncelle");
+        buttonAc();
+
         ObservableList<Tedarikciler> tedarikciList = FXCollections.observableArrayList();
 
         t_id.setCellValueFactory(new PropertyValueFactory<Tedarikciler, Integer>("tedarikci_id"));
@@ -502,6 +552,252 @@ public class MainPageController {
         }
     }
 
+    // Ekleme İşlemleri
+    @FXML
+    private void ekleAction() {
+        if (personellerTablo.isVisible())
+            personelEkle();
+        else if (kumaslarTablo.isVisible())
+            kumasEkle();
+        else if (urunlerTablo.isVisible())
+            urunEkle();
+        else if (alimsatimlarTab.isVisible())
+            faturaKes();
+        else if (musterilervenakliyecilerTab.isVisible()) {
+            if (musterilerTab.isSelected())
+                musteriEkle();
+            else if (nakliyecilerTab.isSelected())
+                nakliyeciEkle();
+
+        } else if (tedarikcilerTablo.isVisible())
+            tedarikciEkle();
+
+    }
+
+    private void faturaKes() {
+    }
+
+    private void musteriEkle() {
+    }
+
+    private void nakliyeciEkle() {
+    }
+
+    private void tedarikciEkle() {
+    }
+
+    private void urunEkle() {
+    }
+
+    private void kumasEkle() {
+    }
+
+    private void personelEkle() {
+
+        // VBox
+        VBox vBox = new VBox();
+
+        // HBox
+        HBox hBox = new HBox();
+        hBox.setMinHeight(400);
+        hBox.setMinWidth(600);
+
+        // Label
+        Label label = new Label("Personel Ekle");
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        label.setPadding(new Insets(10, 0, 10, 30));
+
+        // Label2
+        Label label2 = new Label("Lütfen İstenilenleri Uygun Şekilde Doldurunuz.\n*Zorunlu Alanlar");
+        label2.setFont(Font.font("Arial", 15));
+        label2.setTextFill(Paint.valueOf("red"));
+        label2.setPadding(new Insets(10, 0, 10, 30));
+        label2.setVisible(false);
+
+        // VBox1
+        VBox vBox1 = new VBox();
+        vBox1.getChildren().add(new Label("Personel Adı*:"));
+        vBox1.getChildren().add(new Label("Personel Soyadı*:"));
+        vBox1.getChildren().add(new Label("Personel İşe Giriş Tarihi* (yyyy-mm-dd):"));
+        vBox1.getChildren().add(new Label("Personel Ünvanı*:"));
+        vBox1.getChildren().add(new Label("Personel Adresi:"));
+        vBox1.getChildren().add(new Label("Personel Şehri:"));
+        vBox1.getChildren().add(new Label("Personel Ülkesi:"));
+        vBox1.getChildren().add(new Label("Personel Telefonu (xxx-xxx-xxxx):"));
+        vBox1.getChildren().add(new Label("Personel Doğum Tarihi* (yyyy-mm-dd):"));
+        vBox1.getChildren().add(new Label("Personel Maaşı*:"));
+        vBox1.getChildren().add(new Label("Personel Cinsiyeti* (E/K):"));
+        vBox1.getChildren().add(new Button("İptal"));
+
+        // Css
+        for (int i = 0; i < vBox1.getChildren().size(); i++) {
+            vBox1.setMargin(vBox1.getChildren().get(i), new Insets(17.5, 10, 10, 10));
+        }
+        vBox1.setMargin(vBox1.getChildren().get(11), new Insets(25, 10, 10, 10));
+
+        // VBox2
+        VBox vBox2 = new VBox();
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new TextField());
+        vBox2.getChildren().add(new Button("Ekle"));
+
+        // Css
+        for (int i = 0; i < vBox2.getChildren().size(); i++) {
+            vBox2.setMargin(vBox2.getChildren().get(i), new Insets(10, 10, 10, 10));
+        }
+
+        // Eventler
+        vBox2.getChildren().get(vBox2.getChildren().size() - 1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "INSERT INTO personeller (ad, soyad, ise_baslama_tarih, unvan, adres, sehir, ulke, telefon, dogum_tarihi, maas, cinsiyet) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setString(1, ((TextField) vBox2.getChildren().get(0)).getText());
+                    preparedStatement.setString(2, ((TextField) vBox2.getChildren().get(1)).getText());
+                    preparedStatement.setString(3, ((TextField) vBox2.getChildren().get(2)).getText());
+                    preparedStatement.setString(4, ((TextField) vBox2.getChildren().get(3)).getText());
+                    preparedStatement.setString(5, ((TextField) vBox2.getChildren().get(4)).getText());
+                    preparedStatement.setString(6, ((TextField) vBox2.getChildren().get(5)).getText());
+                    preparedStatement.setString(7, ((TextField) vBox2.getChildren().get(6)).getText());
+                    preparedStatement.setString(8, ((TextField) vBox2.getChildren().get(7)).getText());
+                    preparedStatement.setString(9, ((TextField) vBox2.getChildren().get(8)).getText());
+                    preparedStatement.setString(10, ((TextField) vBox2.getChildren().get(9)).getText());
+                    preparedStatement.setString(11, ((TextField) vBox2.getChildren().get(10)).getText());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    label2.setVisible(true);
+                }
+            }
+        });
+
+        vBox1.getChildren().get(vBox1.getChildren().size() - 1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        hBox.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = hBox.getScene().getWindow().getX() - event.getScreenX();
+                yOffset = hBox.getScene().getWindow().getY() - event.getScreenY();
+            }
+        });
+
+        hBox.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                hBox.getScene().getWindow().setX(event.getScreenX() + xOffset);
+                hBox.getScene().getWindow().setY(event.getScreenY() + yOffset);
+            }
+        });
+
+        hBox.getChildren().add(vBox1);
+        hBox.getChildren().add(vBox2);
+        vBox.getChildren().add(label);
+        vBox.getChildren().add(hBox);
+        vBox.getChildren().add(label2);
+        App.setRoot(vBox);
+
+    }
+
+    // Silme İşlemleri
+    @FXML
+    private void silAction() {
+        if (personellerTablo.isVisible())
+            personelSil();
+        else if (kumaslarTablo.isVisible())
+            kumasSil();
+        else if (urunlerTablo.isVisible())
+            urunSil();
+        else if (alimsatimlarTab.isVisible())
+            faturaSil();
+        else if (musterilervenakliyecilerTab.isVisible()) {
+            if (musterilerTab.isSelected())
+                musteriSil();
+            else if (nakliyecilerTab.isSelected())
+                nakliyeciSil();
+        } else if (tedarikcilerTablo.isVisible())
+            tedarikciSil();
+    }
+
+    private void tedarikciSil() {
+    }
+
+    private void nakliyeciSil() {
+    }
+
+    private void musteriSil() {
+    }
+
+    private void faturaSil() {
+    }
+
+    private void urunSil() {
+    }
+
+    private void kumasSil() {
+    }
+
+    private void personelSil() {
+    }
+
+    // Güncelleme İşlemleri
+    @FXML
+    private void guncelleAction() {
+        if (personellerTablo.isVisible())
+            personelGuncelle();
+        else if (kumaslarTablo.isVisible())
+            kumasGuncelle();
+        else if (urunlerTablo.isVisible())
+            urunGuncelle();
+        else if (musterilervenakliyecilerTab.isVisible()) {
+            if (musterilerTab.isSelected())
+                musteriGuncelle();
+            else if (nakliyecilerTab.isSelected())
+                nakliyeciGuncelle();
+
+        } else if (tedarikcilerTablo.isVisible())
+            tedarikciGuncelle();
+
+    }
+
+    private void tedarikciGuncelle() {
+    }
+
+    private void nakliyeciGuncelle() {
+    }
+
+    private void musteriGuncelle() {
+    }
+
+    private void urunGuncelle() {
+    }
+
+    private void kumasGuncelle() {
+    }
+
+    private void personelGuncelle() {
+    }
+
     // Tabloları Kapatma
     private void tabloKapat() {
         personellerTablo.setVisible(false);
@@ -510,6 +806,20 @@ public class MainPageController {
         alimsatimlarTab.setVisible(false);
         musterilervenakliyecilerTab.setVisible(false);
         tedarikcilerTablo.setVisible(false);
+    }
+
+    // Buttonları Kapatma
+    private void buttonKapat() {
+        ekleButton.setVisible(false);
+        guncelleButton.setVisible(false);
+        silButton.setVisible(false);
+    }
+
+    // Buttonları Açma
+    private void buttonAc() {
+        ekleButton.setVisible(true);
+        guncelleButton.setVisible(true);
+        silButton.setVisible(true);
     }
 
     // Drag and Drop
@@ -575,6 +885,27 @@ public class MainPageController {
         veriler.addAll(satinAlimDetayList);
         sablon.setItems(veriler);
 
+    }
+
+    @Override
+    public void initialize(URL arg0, ResourceBundle arg1) {
+        tabloKapat();
+        buttonKapat();
+
+    }
+
+    @FXML
+    private void musterilerAction() {
+        ekleButton.setText("Müşteri Ekle");
+        silButton.setText("Müşteri Sil");
+        guncelleButton.setText("Müşteri Guncelle");
+    }
+
+    @FXML
+    private void nakliyecilerAction() {
+        ekleButton.setText("Nakliyeci Ekle");
+        silButton.setText("Nakliyeci Sil");
+        guncelleButton.setText("Nakliyeci Guncelle");
     }
 
 }
