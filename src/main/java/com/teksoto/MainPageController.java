@@ -510,6 +510,20 @@ public class MainPageController implements Initializable {
 
     }
 
+    @FXML
+    private void musterilerAction() {
+        ekleButton.setText("Müşteri Ekle");
+        silButton.setText("Müşteri Sil");
+        guncelleButton.setText("Müşteri Guncelle");
+    }
+
+    @FXML
+    private void nakliyecilerAction() {
+        ekleButton.setText("Nakliyeci Ekle");
+        silButton.setText("Nakliyeci Sil");
+        guncelleButton.setText("Nakliyeci Guncelle");
+    }
+
     // Tedarikçiler Tablosu
     @FXML
     private void tedarikcilerButtonAction() {
@@ -600,8 +614,8 @@ public class MainPageController implements Initializable {
                 "Personel Telefonu (xxx-xxx-xxxx):",
                 "Personel Doğum Tarihi* (yyyy-mm-dd):", "Personel Maaşı*:",
                 "Personel Cinsiyeti* (E/K):" };
-
-        VBox vBox = eklemeFirst("Personel Ekleme", istenenler);
+        String[] textFields = new String[istenenler.length];
+        VBox vBox = eklemeFirst("Personel Ekleme", istenenler, textFields);
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -617,6 +631,7 @@ public class MainPageController implements Initializable {
                     }
                     preparedStatement.executeUpdate();
                     App.setRoot("MainPage");
+                    personellerButtonAction();
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
@@ -630,81 +645,14 @@ public class MainPageController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     App.setRoot("MainPage");
+                    personellerButtonAction();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
 
-        App.setRoot(vBox);
-
-    }
-
-    private VBox eklemeFirst(String baslik, String[] istenenler) {
-
-        // VBox
-        VBox vBox = new VBox();
-
-        // Label
-        Label label = new Label(baslik);
-        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        label.setPadding(new Insets(10, 0, 10, 0));
-        vBox.setAlignment(Pos.CENTER);
-
-        // Label2
-        Label label2 = new Label("Lütfen İstenilenleri Uygun Şekilde Doldurunuz.\n*Zorunlu Alanlar");
-        label2.setFont(Font.font("Arial", 15));
-        label2.setTextFill(Paint.valueOf("red"));
-        label2.setPadding(new Insets(10, 0, 10, 30));
-        label2.setVisible(false);
-
-        vBox.getChildren().add(label);
-
-        for (int i = 0; i < istenenler.length; i++) {
-            vBoxEkleme(vBox, istenenler[i]);
-        }
-
-        HBox hBox = new HBox();
-        hBox.getChildren().add(new Button("İptal"));
-        hBox.getChildren().add(new Button("Ekle"));
-        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
-        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
-        hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 125, 0, 25));
-
-        vBox.getChildren().add(hBox);
-        vBox.getChildren().add(label2);
-
-        for (int i = 0; i < vBox.getChildren().size(); i++) {
-            vBox.setMargin(vBox.getChildren().get(i), new Insets(10, 10, 10, 10));
-        }
-
-        vBox.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                xOffset = vBox.getScene().getWindow().getX() - event.getScreenX();
-                yOffset = vBox.getScene().getWindow().getY() - event.getScreenY();
-            }
-        });
-
-        vBox.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                vBox.getScene().getWindow().setX(event.getScreenX() + xOffset);
-                vBox.getScene().getWindow().setY(event.getScreenY() + yOffset);
-            }
-        });
-
-        return vBox;
-
-    }
-
-    private void vBoxEkleme(VBox vBox, String label) {
-        HBox hBox = new HBox();
-        hBox.getChildren().add(new Label(label));
-        hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 10, 0, 0));
-        ((Label) hBox.getChildren().get(0)).setMinWidth(210);
-        hBox.getChildren().add(new TextField());
-        vBox.getChildren().add(hBox);
+        App.setRoot(vBox, 400, 650);
 
     }
 
@@ -747,6 +695,58 @@ public class MainPageController implements Initializable {
     }
 
     private void personelSil() {
+
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        vBox.getChildren()
+                .add(new Label(personellerTablo.getSelectionModel().getSelectedItem().getAd() + " "
+                        + personellerTablo.getSelectionModel().getSelectedItem().getSoyad()
+                        + " isimli personeli silmek istediğinize emin misiniz?"));
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM personeller WHERE personel_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1,
+                            personellerTablo.getSelectionModel().getSelectedItem().getPersonel_id());
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
+
     }
 
     // Güncelleme İşlemleri
@@ -785,6 +785,76 @@ public class MainPageController implements Initializable {
     }
 
     private void personelGuncelle() {
+        String[] istenenler = { "Personel Adı*:", "Personel Soyadı*:", "Personel İşe Giriş Tarihi* (yyyy-mm-dd):",
+                "Personel Ünvanı*:", "Personel Adresi:", "Personel Şehri:", "Personel Ülkesi:",
+                "Personel Telefonu (xxx-xxx-xxxx):",
+                "Personel Doğum Tarihi* (yyyy-mm-dd):", "Personel Maaşı*:",
+                "Personel Cinsiyeti* (E/K):" };
+        String[] textFields = new String[istenenler.length];
+        String sql = "SELECT * FROM personeller WHERE personel_id = "
+                + personellerTablo.getSelectionModel().getSelectedItem().getPersonel_id();
+
+        try {
+            Statement statement = databaseConnection.getConnection().createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                textFields[0] = resultSet.getString("ad");
+                textFields[1] = resultSet.getString("soyad");
+                textFields[2] = resultSet.getString("ise_baslama_tarih");
+                textFields[3] = resultSet.getString("unvan");
+                textFields[4] = resultSet.getString("adres");
+                textFields[5] = resultSet.getString("sehir");
+                textFields[6] = resultSet.getString("ulke");
+                textFields[7] = resultSet.getString("telefon");
+                textFields[8] = resultSet.getString("dogum_tarihi");
+                textFields[9] = resultSet.getString("maas");
+                textFields[10] = resultSet.getString("cinsiyet");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            e.getCause();
+        }
+
+        VBox vBox = eklemeFirst("Personel Ekleme", istenenler, textFields);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "UPDATE personeller SET ad = ?, soyad = ?, ise_baslama_tarih = ?, unvan = ?, adres = ?, sehir = ?, ulke = ?, telefon = ?, dogum_tarihi = ?, maas = ?, cinsiyet = ? WHERE personel_id = "
+                        + personellerTablo.getSelectionModel().getSelectedItem().getPersonel_id();
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 2; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
     }
 
     // Tabloları Kapatma
@@ -883,18 +953,72 @@ public class MainPageController implements Initializable {
 
     }
 
-    @FXML
-    private void musterilerAction() {
-        ekleButton.setText("Müşteri Ekle");
-        silButton.setText("Müşteri Sil");
-        guncelleButton.setText("Müşteri Guncelle");
+    private VBox eklemeFirst(String baslik, String[] istenenler, String[] tektFields) {
+
+        // VBox
+        VBox vBox = new VBox();
+
+        // Label
+        Label label = new Label(baslik);
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        label.setPadding(new Insets(10, 0, 10, 0));
+        vBox.setAlignment(Pos.CENTER);
+
+        // Label2
+        Label label2 = new Label("Lütfen İstenilenleri Uygun Şekilde Doldurunuz.\n*Zorunlu Alanlar");
+        label2.setFont(Font.font("Arial", 15));
+        label2.setTextFill(Paint.valueOf("red"));
+        label2.setPadding(new Insets(10, 0, 10, 30));
+        label2.setVisible(false);
+
+        vBox.getChildren().add(label);
+
+        for (int i = 0; i < istenenler.length; i++) {
+            vBoxEkleme(vBox, istenenler[i], tektFields[i]);
+        }
+
+        HBox hBox = new HBox();
+        hBox.getChildren().add(new Button("İptal"));
+        hBox.getChildren().add(new Button("Ekle"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 125, 0, 25));
+
+        vBox.getChildren().add(hBox);
+        vBox.getChildren().add(label2);
+
+        for (int i = 0; i < vBox.getChildren().size(); i++) {
+            vBox.setMargin(vBox.getChildren().get(i), new Insets(10, 10, 10, 10));
+        }
+
+        vBox.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = vBox.getScene().getWindow().getX() - event.getScreenX();
+                yOffset = vBox.getScene().getWindow().getY() - event.getScreenY();
+            }
+        });
+
+        vBox.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                vBox.getScene().getWindow().setX(event.getScreenX() + xOffset);
+                vBox.getScene().getWindow().setY(event.getScreenY() + yOffset);
+            }
+        });
+
+        return vBox;
+
     }
 
-    @FXML
-    private void nakliyecilerAction() {
-        ekleButton.setText("Nakliyeci Ekle");
-        silButton.setText("Nakliyeci Sil");
-        guncelleButton.setText("Nakliyeci Guncelle");
+    private void vBoxEkleme(VBox vBox, String label, String textField) {
+        HBox hBox = new HBox();
+        hBox.getChildren().add(new Label(label));
+        hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 10, 0, 0));
+        ((Label) hBox.getChildren().get(0)).setMinWidth(210);
+        hBox.getChildren().add(new TextField(textField));
+        vBox.getChildren().add(hBox);
+
     }
 
 }

@@ -34,9 +34,9 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    static void setRoot(Parent root) {
-        scene.getWindow().setWidth(400);
-        scene.getWindow().setHeight(650);
+    static void setRoot(Parent root, int width, int height) {
+        scene.getWindow().setWidth(width);
+        scene.getWindow().setHeight(height);
         scene.getWindow().centerOnScreen();
         scene.setRoot(root);
     }
