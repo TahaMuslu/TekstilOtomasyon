@@ -70,6 +70,10 @@ public class MainPageController implements Initializable {
     @FXML
     private TabPane alimsatimlarTab;
     @FXML
+    private Tab alimlarTab;
+    @FXML
+    private Tab satimlarTab;
+    @FXML
     private TabPane musterilervenakliyecilerTab;
     @FXML
     private TableView<Tedarikciler> tedarikcilerTablo;
@@ -342,6 +346,7 @@ public class MainPageController implements Initializable {
             String sql = "SELECT * FROM tekstil_otomasyonu.satislar s INNER JOIN tekstil_otomasyonu.musteriler m on s.musteri_id=m.musteri_id ORDER BY satis_tarihi;";
             Statement statement = databaseConnection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            int i = 0;
             while (resultSet.next()) {
 
                 satislarList.add(new Satislar(
@@ -371,12 +376,14 @@ public class MainPageController implements Initializable {
 
                 // Titled Pane Şablonu
                 TitledPane sablon = new TitledPane(
-                        "{ID: " + resultSet.getInt("satis_id") + "}  -  " + resultSet.getString("satis_tarihi") + " - "
+                        i + "- {ID: " + resultSet.getInt("satis_id") + "}  -  " + resultSet.getString("satis_tarihi")
+                                + " - "
                                 + resultSet.getString("ad") + " "
                                 + resultSet.getString("soyad"),
                         pane);
                 sablon.setId(resultSet.getString("satis_id"));
                 satimlarAccordion.getPanes().add(sablon);
+                i++;
             }
 
         } catch (Exception e) {
@@ -397,6 +404,7 @@ public class MainPageController implements Initializable {
             String sql = "SELECT * FROM tekstil_otomasyonu.satin_alimlar s INNER JOIN tekstil_otomasyonu.tedarikciler t ON s.tedarikci_id=t.tedarikci_id ORDER BY satin_alim_tarih;";
             Statement statement = databaseConnection.getConnection().createStatement();
             ResultSet resultSet = statement.executeQuery(sql);
+            int i = 0;
             while (resultSet.next()) {
 
                 satinAlimlarList.add(new SatinAlimlar(
@@ -424,12 +432,14 @@ public class MainPageController implements Initializable {
 
                 // Titled Pane Şablonu
                 TitledPane sablon = new TitledPane(
-                        "{ID: " + resultSet.getInt("satin_alim_id") + "}  -  " + resultSet.getString("satin_alim_tarih")
+                        i + "- {ID: " + resultSet.getInt("satin_alim_id") + "}  -  "
+                                + resultSet.getString("satin_alim_tarih")
                                 + " - "
                                 + resultSet.getString("sirket_adi"),
                         pane);
                 sablon.setId(resultSet.getString("satin_alim_id"));
                 alimlarAccordion.getPanes().add(sablon);
+                i++;
             }
 
         } catch (Exception e) {
@@ -590,6 +600,146 @@ public class MainPageController implements Initializable {
     }
 
     private void faturaKes() {
+        if (alimlarTab.isSelected())
+            alimFaturaKes();
+        else if (satimlarTab.isSelected())
+            satimFaturaKes();
+    }
+
+    private void satimFaturaKes() {
+
+        String[] istenenler = { "Müşteri ID*:", "Satış Tarihi* (yyyy-mm-dd):",
+                "Nakliye Ücreti*:", "Nakliyeci ID*:" };
+
+        VBox vBox = faturaFirst(istenenler, 1);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "INSERT INTO satislar (musteri_id,satis_tarihi,nakliye_ucreti,nakliyeci_id) VALUES ( ?, ?, ?, ?)";
+                String sql2 = "INSERT INTO satis_detay (satis_id,miktar,urun_id) VALUES ( ?,?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 6; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                    Statement statement = databaseConnection.getConnection()
+                            .createStatement();
+                    ResultSet rs = statement.executeQuery("SELECT MAX(satis_id) FROM satislar");
+                    int temp = 0;
+                    while (rs.next()) {
+                        temp = rs.getInt("MAX(satis_id)");
+                    }
+                    final int satis_id = temp;
+
+                    statement.close();
+
+                    TableView<SatisDetay> tableView = (TableView<SatisDetay>) vBox.getChildren()
+                            .get(vBox.getChildren().size() - 3);
+                    for (int i = 0; i < tableView.getItems().size(); i++) {
+                        preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
+                        preparedStatement.setInt(1, satis_id);
+                        preparedStatement.setInt(2, tableView.getItems().get(i).getMiktar());
+                        preparedStatement.setInt(3, tableView.getItems().get(i).getUrun_id());
+                        preparedStatement.executeUpdate();
+                        preparedStatement.close();
+                    }
+                    App.setRoot("MainPage");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
+    }
+
+    private void alimFaturaKes() {
+
+        String[] istenenler = { "Tedarikçi ID*:", "Satın Alım Tarihi* (yyyy-mm-dd):" };
+        VBox vBox = faturaFirst(istenenler, 0);
+
+        // Eventler
+        HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "INSERT INTO satin_alimlar (tedarikci_id,satin_alim_tarih) VALUES ( ?, ?)";
+                String sql2 = "INSERT INTO satin_alim_detay (satin_alim_id,kumas_id,miktar) VALUES ( ?,?, ?)";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    for (int i = 1; i < vBox.getChildren().size() - 6; i++) {
+                        HBox hBoxTemp = (HBox) vBox.getChildren().get(i);
+                        preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
+                    }
+                    preparedStatement.executeUpdate();
+                    preparedStatement.close();
+
+                    Statement statement = databaseConnection.getConnection()
+                            .createStatement();
+
+                    ResultSet rs = statement.executeQuery("SELECT MAX(satin_alim_id) FROM satin_alimlar");
+                    int temp = 0;
+                    while (rs.next()) {
+                        temp = rs.getInt("MAX(satin_alim_id)");
+                    }
+                    final int satin_alim_id = temp;
+                    statement.close();
+
+                    TableView<SatinAlimDetay> tableView = (TableView<SatinAlimDetay>) vBox.getChildren()
+                            .get(vBox.getChildren().size() - 3);
+                    for (int i = 0; i < tableView.getItems().size(); i++) {
+                        preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
+                        preparedStatement.setInt(1, satin_alim_id);
+                        preparedStatement.setInt(2, tableView.getItems().get(i).getKumas_id());
+                        preparedStatement.setInt(3, tableView.getItems().get(i).getMiktar());
+                        preparedStatement.executeUpdate();
+                        preparedStatement.close();
+                    }
+                    App.setRoot("MainPage");
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 400, 650);
+
     }
 
     private void musteriEkle() {
@@ -1029,6 +1179,156 @@ public class MainPageController implements Initializable {
     }
 
     private void faturaSil() {
+        if (alimlarTab.isSelected())
+            alimFaturaSil();
+        else if (satimlarTab.isSelected())
+            satimFaturaSil();
+    }
+
+    private void satimFaturaSil() {
+
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        int temp = 0;
+        for (int i = 0; i < satimlarAccordion.getPanes().size(); i++) {
+            if (satimlarAccordion.getPanes().get(i).isExpanded()) {
+                vBox.getChildren().add(new Label(satimlarAccordion.getPanes().get(i).getText()
+                        + " faturasını silmek istediğinize emin misiniz?"));
+                ((Label) vBox.getChildren().get(0)).wrapTextProperty().setValue(true);
+                ((Label) vBox.getChildren().get(0)).setPadding(new Insets(0, 20, 0, 20));
+                temp = Integer.parseInt(satimlarAccordion.getPanes().get(i).getText().split(" ")[2]
+                        .replaceFirst("}", ""));
+
+            }
+        }
+        final int satis_id = temp;
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM satis_detay WHERE satis_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1, satis_id);
+                    preparedStatement.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+
+                }
+
+                String sql2 = "DELETE FROM satislar WHERE satis_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
+                    preparedStatement.setInt(1, satis_id);
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
+
+    }
+
+    private void alimFaturaSil() {
+
+        VBox vBox = new VBox();
+        HBox hBox = new HBox();
+        vBox.setAlignment(Pos.CENTER);
+        hBox.setAlignment(Pos.CENTER);
+        int temp = 0;
+        for (int i = 0; i < alimlarAccordion.getPanes().size(); i++) {
+            if (alimlarAccordion.getPanes().get(i).isExpanded()) {
+                vBox.getChildren().add(new Label(alimlarAccordion.getPanes().get(i).getText()
+                        + " faturasını silmek istediğinize emin misiniz?"));
+                ((Label) vBox.getChildren().get(0)).wrapTextProperty().setValue(true);
+                ((Label) vBox.getChildren().get(0)).setPadding(new Insets(0, 20, 0, 20));
+                temp = Integer.parseInt(alimlarAccordion.getPanes().get(i).getText().split(" ")[2]
+                        .replaceFirst("}", ""));
+
+            }
+        }
+        final int satin_alim_id = temp;
+        hBox.getChildren().add(new Button("Hayır"));
+        hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setSpacing(100);
+        vBox.setMargin(vBox.getChildren().get(0), new Insets(0, 0, 20, 0));
+
+        vBox.getChildren().add(hBox);
+
+        // Eventler
+        hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String sql = "DELETE FROM satin_alim_detay WHERE satin_alim_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
+                    preparedStatement.setInt(1, satin_alim_id);
+                    preparedStatement.executeUpdate();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+
+                }
+
+                String sql2 = "DELETE FROM satin_alimlar WHERE satin_alim_id = ?";
+                try {
+                    PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
+                    preparedStatement.setInt(1, satin_alim_id);
+                    preparedStatement.executeUpdate();
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getCause();
+                }
+            }
+        });
+
+        hBox.getChildren().get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                try {
+                    App.setRoot("MainPage");
+                    personellerButtonAction();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        App.setRoot(vBox, 500, 200);
+
     }
 
     private void urunSil() {
@@ -1167,7 +1467,7 @@ public class MainPageController implements Initializable {
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
-                    vBox.getChildren().get(vBox.getChildren().size() - 1).setVisible(true);
+
                 }
             }
         });
@@ -1555,7 +1855,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Personel Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Personel Güncelle", istenenler, textFields);
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1693,7 +1993,7 @@ public class MainPageController implements Initializable {
 
     }
 
-    private VBox eklemeFirst(String baslik, String[] istenenler, String[] tektFields) {
+    private VBox eklemeFirst(String baslik, String[] istenenler, String[] textFields) {
 
         // VBox
         VBox vBox = new VBox();
@@ -1714,7 +2014,7 @@ public class MainPageController implements Initializable {
         vBox.getChildren().add(label);
 
         for (int i = 0; i < istenenler.length; i++) {
-            vBoxEkleme(vBox, istenenler[i], tektFields[i]);
+            vBoxEkleme(vBox, istenenler[i], textFields[i]);
         }
 
         HBox hBox = new HBox();
@@ -1761,4 +2061,151 @@ public class MainPageController implements Initializable {
 
     }
 
+    private VBox faturaFirst(String[] istenenler, int faturaTur) {
+
+        // VBox
+        VBox vBox = new VBox();
+
+        // Label
+        Label label = new Label("Fatura Kayıt");
+        label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
+        label.setPadding(new Insets(10, 0, 10, 0));
+        vBox.setAlignment(Pos.CENTER);
+
+        // Label2
+        Label label2 = new Label("Lütfen İstenilenleri Uygun Şekilde Doldurunuz.\n*Zorunlu Alanlar");
+        label2.setFont(Font.font("Arial", 15));
+        label2.setTextFill(Paint.valueOf("red"));
+        label2.setPadding(new Insets(10, 0, 10, 30));
+        label2.setVisible(false);
+
+        vBox.getChildren().add(label);
+
+        for (int i = 0; i < istenenler.length; i++) {
+            vBoxEkleme(vBox, istenenler[i], "");
+        }
+
+        // Butonlar
+        HBox hBox = new HBox();
+        hBox.getChildren().add(new Button("İptal"));
+        hBox.getChildren().add(new Button("Ekle"));
+        ((Button) hBox.getChildren().get(0)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 125, 0, 25));
+
+        // Fatura Detayları
+        HBox hBox2 = new HBox();
+        hBox2.getChildren().add(new Label("Faturaya Ürün Ekle:"));
+        hBox2.getChildren().add(new Button("+"));
+        ((Label) hBox2.getChildren().get(0)).setMinWidth(220);
+        ((Button) hBox2.getChildren().get(1)).setMinWidth(50);
+
+        HBox hBox3 = new HBox();
+        hBox3.getChildren().add(new Label());
+        hBox3.getChildren().add(new TextField());
+        hBox3.setMargin(hBox3.getChildren().get(0), new Insets(0, 10, 0, 0));
+        ((Label) hBox3.getChildren().get(0)).setMinWidth(210);
+
+        HBox hBox4 = new HBox();
+        hBox4.getChildren().add(new Label());
+        hBox4.getChildren().add(new TextField());
+        hBox4.setMargin(hBox4.getChildren().get(0), new Insets(0, 10, 0, 0));
+        ((Label) hBox4.getChildren().get(0)).setMinWidth(210);
+
+        vBox.getChildren().add(hBox2);
+        vBox.getChildren().add(hBox3);
+        vBox.getChildren().add(hBox4);
+        if (faturaTur == 1) { // Satış
+
+            ((Label) hBox3.getChildren().get(0)).setText("Ürün Adet:");
+            ((Label) hBox4.getChildren().get(0)).setText("Ürün ID:");
+
+            TableView<SatisDetay> tableView = new TableView<SatisDetay>();
+            TableColumn<SatisDetay, Integer> kol1 = new TableColumn<SatisDetay, Integer>("satis_id");
+            TableColumn<SatisDetay, Integer> kol2 = new TableColumn<SatisDetay, Integer>("miktar");
+            TableColumn<SatisDetay, Integer> kol3 = new TableColumn<SatisDetay, Integer>("urun_id");
+            kol1.setText("Satış ID");
+            kol2.setText("Miktar");
+            kol3.setText("Ürün ID");
+            kol1.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("satis_id"));
+            kol2.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("miktar"));
+            kol3.setCellValueFactory(new PropertyValueFactory<SatisDetay, Integer>("urun_id"));
+            // tableView.getColumns().add(kol1);
+            tableView.getColumns().add(kol2);
+            tableView.getColumns().add(kol3);
+            tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+            vBox.getChildren().add(tableView);
+            ((Button) hBox2.getChildren().get(1)).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tableView.getItems().add(new SatisDetay(0,
+                            Integer.parseInt(((TextField) hBox3.getChildren().get(1)).getText()),
+                            Integer.parseInt(((TextField) hBox4.getChildren().get(1)).getText())));
+
+                    ((TextField) hBox3.getChildren().get(1)).setText("");
+                    ((TextField) hBox4.getChildren().get(1)).setText("");
+                    tableView.refresh();
+                }
+            });
+        } else { // Alış
+
+            ((Label) hBox3.getChildren().get(0)).setText("Kumaş ID:");
+            ((Label) hBox4.getChildren().get(0)).setText("Miktar:");
+
+            TableView<SatinAlimDetay> tableView = new TableView<SatinAlimDetay>();
+            TableColumn<SatinAlimDetay, Integer> kol1 = new TableColumn<SatinAlimDetay, Integer>("satin_alim_id");
+            TableColumn<SatinAlimDetay, Integer> kol2 = new TableColumn<SatinAlimDetay, Integer>("kumas_id");
+            TableColumn<SatinAlimDetay, Integer> kol3 = new TableColumn<SatinAlimDetay, Integer>("miktar");
+            kol1.setText("Satın Alım ID");
+            kol2.setText("Kumaş ID");
+            kol3.setText("Miktar");
+            kol1.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("satin_alim_id"));
+            kol2.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("kumas_id"));
+            kol3.setCellValueFactory(new PropertyValueFactory<SatinAlimDetay, Integer>("miktar"));
+            // tableView.getColumns().add(kol1);
+            tableView.getColumns().add(kol2);
+            tableView.getColumns().add(kol3);
+            tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+            vBox.getChildren().add(tableView);
+            ((Button) hBox2.getChildren().get(1)).setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    tableView.getItems().add(new SatinAlimDetay(0,
+                            Integer.parseInt(((TextField) hBox3.getChildren().get(1)).getText()),
+                            Integer.parseInt(((TextField) hBox4.getChildren().get(1)).getText())));
+
+                    ((TextField) hBox3.getChildren().get(1)).setText("");
+                    ((TextField) hBox4.getChildren().get(1)).setText("");
+                    tableView.refresh();
+                }
+            });
+        }
+
+        vBox.getChildren().add(hBox);
+        vBox.getChildren().add(label2);
+
+        for (int i = 0; i < vBox.getChildren().size(); i++) {
+            vBox.setMargin(vBox.getChildren().get(i), new Insets(10, 10, 10, 10));
+        }
+
+        vBox.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = vBox.getScene().getWindow().getX() - event.getScreenX();
+                yOffset = vBox.getScene().getWindow().getY() - event.getScreenY();
+            }
+        });
+
+        vBox.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                vBox.getScene().getWindow().setX(event.getScreenX() + xOffset);
+                vBox.getScene().getWindow().setY(event.getScreenY() + yOffset);
+            }
+        });
+
+        return vBox;
+    }
 }
