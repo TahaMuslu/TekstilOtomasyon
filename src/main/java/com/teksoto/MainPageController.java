@@ -12,7 +12,6 @@ import com.model.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -328,7 +327,6 @@ public class MainPageController implements Initializable {
         alimsatimlarTab.setVisible(true);
         satimlarOlustur();
         alimlarOlustur();
-
         ekleButton.setText("Fatura Kes");
         silButton.setText("Fatura Sil");
         buttonAc();
@@ -348,7 +346,6 @@ public class MainPageController implements Initializable {
             ResultSet resultSet = statement.executeQuery(sql);
             int i = 0;
             while (resultSet.next()) {
-
                 satislarList.add(new Satislar(
                         resultSet.getInt("satis_id"),
                         resultSet.getInt("musteri_id"),
@@ -367,6 +364,8 @@ public class MainPageController implements Initializable {
                             resultSet2.getInt("miktar"),
                             resultSet2.getInt("urun_id")));
                 }
+                if (statement2 != null)
+                    statement2.close();
                 TableView<SatisDetay> table = new TableView<SatisDetay>();
                 tableViewSablon(table, satisDetayList);
                 satisDetayList.clear();
@@ -385,6 +384,8 @@ public class MainPageController implements Initializable {
                 satimlarAccordion.getPanes().add(sablon);
                 i++;
             }
+            if (statement != null)
+                statement.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -406,7 +407,6 @@ public class MainPageController implements Initializable {
             ResultSet resultSet = statement.executeQuery(sql);
             int i = 0;
             while (resultSet.next()) {
-
                 satinAlimlarList.add(new SatinAlimlar(
                         resultSet.getInt("satin_alim_id"),
                         resultSet.getInt("tedarikci_id"),
@@ -423,6 +423,8 @@ public class MainPageController implements Initializable {
                             resultSet2.getInt("kumas_id"),
                             resultSet2.getInt("miktar")));
                 }
+                if (statement2 != null)
+                    statement2.close();
                 TableView<SatinAlimDetay> table = new TableView<SatinAlimDetay>();
                 tableViewSablon2(table, satinAlimDetayList);
                 satinAlimDetayList.clear();
@@ -441,6 +443,8 @@ public class MainPageController implements Initializable {
                 alimlarAccordion.getPanes().add(sablon);
                 i++;
             }
+            if (statement != null)
+                statement.close();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -627,7 +631,8 @@ public class MainPageController implements Initializable {
                         preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
                     }
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
 
                     Statement statement = databaseConnection.getConnection()
                             .createStatement();
@@ -637,8 +642,8 @@ public class MainPageController implements Initializable {
                         temp = rs.getInt("MAX(satis_id)");
                     }
                     final int satis_id = temp;
-
-                    statement.close();
+                    if (statement != null)
+                        statement.close();
 
                     TableView<SatisDetay> tableView = (TableView<SatisDetay>) vBox.getChildren()
                             .get(vBox.getChildren().size() - 3);
@@ -648,7 +653,8 @@ public class MainPageController implements Initializable {
                         preparedStatement.setInt(2, tableView.getItems().get(i).getMiktar());
                         preparedStatement.setInt(3, tableView.getItems().get(i).getUrun_id());
                         preparedStatement.executeUpdate();
-                        preparedStatement.close();
+                        if (preparedStatement != null)
+                            preparedStatement.close();
                     }
                     App.setRoot("MainPage");
 
@@ -694,7 +700,8 @@ public class MainPageController implements Initializable {
                         preparedStatement.setString(i, ((TextField) hBoxTemp.getChildren().get(1)).getText());
                     }
                     preparedStatement.executeUpdate();
-                    preparedStatement.close();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
 
                     Statement statement = databaseConnection.getConnection()
                             .createStatement();
@@ -705,7 +712,8 @@ public class MainPageController implements Initializable {
                         temp = rs.getInt("MAX(satin_alim_id)");
                     }
                     final int satin_alim_id = temp;
-                    statement.close();
+                    if (statement != null)
+                        statement.close();
 
                     TableView<SatinAlimDetay> tableView = (TableView<SatinAlimDetay>) vBox.getChildren()
                             .get(vBox.getChildren().size() - 3);
@@ -715,7 +723,8 @@ public class MainPageController implements Initializable {
                         preparedStatement.setInt(2, tableView.getItems().get(i).getKumas_id());
                         preparedStatement.setInt(3, tableView.getItems().get(i).getMiktar());
                         preparedStatement.executeUpdate();
-                        preparedStatement.close();
+                        if (preparedStatement != null)
+                            preparedStatement.close();
                     }
                     App.setRoot("MainPage");
 
@@ -1222,6 +1231,8 @@ public class MainPageController implements Initializable {
                     PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
                     preparedStatement.setInt(1, satis_id);
                     preparedStatement.executeUpdate();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
@@ -1233,8 +1244,9 @@ public class MainPageController implements Initializable {
                     PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
                     preparedStatement.setInt(1, satis_id);
                     preparedStatement.executeUpdate();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
                     App.setRoot("MainPage");
-                    personellerButtonAction();
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
@@ -1247,7 +1259,6 @@ public class MainPageController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     App.setRoot("MainPage");
-                    personellerButtonAction();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -1295,6 +1306,8 @@ public class MainPageController implements Initializable {
                     PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql);
                     preparedStatement.setInt(1, satin_alim_id);
                     preparedStatement.executeUpdate();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
@@ -1306,8 +1319,9 @@ public class MainPageController implements Initializable {
                     PreparedStatement preparedStatement = databaseConnection.getConnection().prepareStatement(sql2);
                     preparedStatement.setInt(1, satin_alim_id);
                     preparedStatement.executeUpdate();
+                    if (preparedStatement != null)
+                        preparedStatement.close();
                     App.setRoot("MainPage");
-                    personellerButtonAction();
                 } catch (Exception e) {
                     e.printStackTrace();
                     e.getCause();
@@ -1320,7 +1334,6 @@ public class MainPageController implements Initializable {
             public void handle(MouseEvent event) {
                 try {
                     App.setRoot("MainPage");
-                    personellerButtonAction();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
