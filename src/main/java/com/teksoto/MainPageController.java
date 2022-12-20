@@ -380,6 +380,7 @@ public class MainPageController implements Initializable {
                                 + resultSet.getString("ad") + " "
                                 + resultSet.getString("soyad"),
                         pane);
+                sablon.getStyleClass().add("titled-pane");
                 sablon.setId(resultSet.getString("satis_id"));
                 satimlarAccordion.getPanes().add(sablon);
                 i++;
@@ -439,6 +440,7 @@ public class MainPageController implements Initializable {
                                 + " - "
                                 + resultSet.getString("sirket_adi"),
                         pane);
+                sablon.getStyleClass().add("titled-pane");
                 sablon.setId(resultSet.getString("satin_alim_id"));
                 alimlarAccordion.getPanes().add(sablon);
                 i++;
@@ -754,7 +756,7 @@ public class MainPageController implements Initializable {
     private void musteriEkle() {
         String[] istenenler = { "Ad:", "Soyad:", "Unvan:", "Adres*:", "Şehir*:", "Ulke*:", "Telefon:", "Şirket Ad*:" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields, "Ekle");
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
 
         hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -796,7 +798,7 @@ public class MainPageController implements Initializable {
     private void nakliyeciEkle() {
         String[] istenenler = { "Şirket Adı*:", "Telefon:" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields, "Ekle");
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
 
         hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -839,7 +841,7 @@ public class MainPageController implements Initializable {
     private void tedarikciEkle() {
         String[] istenenler = { "Şirket Adı*:", "Web Sayfası:", "Adres:", "Şehir:", "Ülke:", "Telefon*:" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields, "Ekle");
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
 
         hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -881,7 +883,7 @@ public class MainPageController implements Initializable {
     private void urunEkle() {
         String[] istenenler = { "Ürün Adı*:", "Kumaş ID*:", "Paket Miktarı*:", "Paket Fiyatı*:", "Stok" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields, "Ekle");
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
 
         hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -923,7 +925,7 @@ public class MainPageController implements Initializable {
     private void kumasEkle() {
         String[] istenenler = { "Kumaş Adı*:", "Stok*:", "Tedarikci ID*:", "Birim Fiyatı*:" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Kumas Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Kumas Ekleme", istenenler, textFields, "Ekle");
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
 
         hBox.getChildren().get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -972,7 +974,7 @@ public class MainPageController implements Initializable {
                 "Personel Doğum Tarihi* (yyyy-mm-dd):", "Personel Maaşı*:",
                 "Personel Cinsiyeti* (E/K):" };
         String[] textFields = new String[istenenler.length];
-        VBox vBox = eklemeFirst("Personel Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Personel Ekleme", istenenler, textFields, "Ekle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1041,8 +1043,15 @@ public class MainPageController implements Initializable {
         vBox.getChildren()
                 .add(new Label(tedarikcilerTablo.getSelectionModel().getSelectedItem().getSirket_adi()
                         + " isimli tedarikciyi silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1091,10 +1100,19 @@ public class MainPageController implements Initializable {
         vBox.setAlignment(Pos.CENTER);
         hBox.setAlignment(Pos.CENTER);
         vBox.getChildren()
-                .add(new Label(nakliyecilerTablo.getSelectionModel().getSelectedItem().getNakliyeci_id()
+                .add(new Label(nakliyecilerTablo.getSelectionModel().getSelectedItem().getSirket_ad()
                         + " isimli nakliyeciyi silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1145,8 +1163,17 @@ public class MainPageController implements Initializable {
         vBox.getChildren()
                 .add(new Label(musterilerTablo.getSelectionModel().getSelectedItem().getSirket_ad()
                         + " isimli şirketi silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1213,8 +1240,17 @@ public class MainPageController implements Initializable {
             }
         }
         final int satis_id = temp;
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1288,8 +1324,17 @@ public class MainPageController implements Initializable {
             }
         }
         final int satin_alim_id = temp;
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1352,8 +1397,17 @@ public class MainPageController implements Initializable {
         vBox.getChildren()
                 .add(new Label(urunlerTablo.getSelectionModel().getSelectedItem().getUrun_adi()
                         + " isimli ürünü silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1402,8 +1456,17 @@ public class MainPageController implements Initializable {
         vBox.getChildren()
                 .add(new Label(kumaslarTablo.getSelectionModel().getSelectedItem().getKumas_ad()
                         + " isimli kumaşı silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1456,8 +1519,17 @@ public class MainPageController implements Initializable {
                 .add(new Label(personellerTablo.getSelectionModel().getSelectedItem().getAd() + " "
                         + personellerTablo.getSelectionModel().getSelectedItem().getSoyad()
                         + " isimli personeli silmek istediğinize emin misiniz?"));
+        vBox.setStyle("-fx-background-color: #34383f;");
+        vBox.getChildren().get(0).setStyle(
+                "-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         hBox.getChildren().add(new Button("Hayır"));
         hBox.getChildren().add(new Button("Evet"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setSpacing(100);
@@ -1544,7 +1616,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Tedarikçi Ekleme", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1604,7 +1676,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Nakliyeci Ekleme", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1671,7 +1743,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Müşteri Ekleme", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1735,7 +1807,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Ürün Ekleme", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1796,7 +1868,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Kumaş Ekleme", istenenler, textFields);
+        VBox vBox = eklemeFirst("Kumaş Ekleme", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -1868,7 +1940,7 @@ public class MainPageController implements Initializable {
             e.getCause();
         }
 
-        VBox vBox = eklemeFirst("Personel Güncelle", istenenler, textFields);
+        VBox vBox = eklemeFirst("Personel Güncelle", istenenler, textFields, "Güncelle");
 
         // Eventler
         HBox hBox = (HBox) vBox.getChildren().get(vBox.getChildren().size() - 2);
@@ -2006,15 +2078,17 @@ public class MainPageController implements Initializable {
 
     }
 
-    private VBox eklemeFirst(String baslik, String[] istenenler, String[] textFields) {
+    private VBox eklemeFirst(String baslik, String[] istenenler, String[] textFields, String actionStr) {
 
         // VBox
         VBox vBox = new VBox();
+        vBox.setStyle("-fx-background-color: #34383f;");
 
         // Label
         Label label = new Label(baslik);
         label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         label.setPadding(new Insets(10, 0, 10, 0));
+        label.setStyle("-fx-text-fill: linear-gradient(to right,#637b98,#557fad,#3d34be,#3700fe);");
         vBox.setAlignment(Pos.CENTER);
 
         // Label2
@@ -2023,7 +2097,6 @@ public class MainPageController implements Initializable {
         label2.setTextFill(Paint.valueOf("red"));
         label2.setPadding(new Insets(10, 0, 10, 30));
         label2.setVisible(false);
-
         vBox.getChildren().add(label);
 
         for (int i = 0; i < istenenler.length; i++) {
@@ -2032,9 +2105,13 @@ public class MainPageController implements Initializable {
 
         HBox hBox = new HBox();
         hBox.getChildren().add(new Button("İptal"));
-        hBox.getChildren().add(new Button("Ekle"));
+        hBox.getChildren().add(new Button(actionStr));
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
         hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 125, 0, 25));
 
         vBox.getChildren().add(hBox);
@@ -2067,9 +2144,12 @@ public class MainPageController implements Initializable {
     private void vBoxEkleme(VBox vBox, String label, String textField) {
         HBox hBox = new HBox();
         hBox.getChildren().add(new Label(label));
+        ((Label) hBox.getChildren().get(hBox.getChildren().size() - 1)).setTextFill(Paint.valueOf("white"));
         hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 10, 0, 0));
         ((Label) hBox.getChildren().get(0)).setMinWidth(210);
         hBox.getChildren().add(new TextField(textField));
+        ((TextField) hBox.getChildren().get(hBox.getChildren().size() - 1))
+                .setStyle("-fx-background-color: #3e4955;-fx-text-fill: white;");
         vBox.getChildren().add(hBox);
 
     }
@@ -2078,9 +2158,11 @@ public class MainPageController implements Initializable {
 
         // VBox
         VBox vBox = new VBox();
+        vBox.setStyle("-fx-background-color: #34383f;");
 
         // Label
         Label label = new Label("Fatura Kayıt");
+        label.setStyle("-fx-text-fill: linear-gradient(to right,#637b98,#557fad,#3d34be,#3700fe);");
         label.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         label.setPadding(new Insets(10, 0, 10, 0));
         vBox.setAlignment(Pos.CENTER);
@@ -2102,6 +2184,10 @@ public class MainPageController implements Initializable {
         HBox hBox = new HBox();
         hBox.getChildren().add(new Button("İptal"));
         hBox.getChildren().add(new Button("Ekle"));
+        ((Button) hBox.getChildren().get(0)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
+        ((Button) hBox.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
         ((Button) hBox.getChildren().get(0)).setMinWidth(100);
         ((Button) hBox.getChildren().get(1)).setMinWidth(100);
         hBox.setMargin(hBox.getChildren().get(0), new Insets(0, 125, 0, 25));
@@ -2111,17 +2197,26 @@ public class MainPageController implements Initializable {
         hBox2.getChildren().add(new Label("Faturaya Ürün Ekle:"));
         hBox2.getChildren().add(new Button("+"));
         ((Label) hBox2.getChildren().get(0)).setMinWidth(220);
+        ((Label) hBox2.getChildren().get(0)).setTextFill(Paint.valueOf("white"));
+        ((Button) hBox2.getChildren().get(1)).setStyle(
+                "-fx-background-color: linear-gradient(to right,#29323c,#485563,#2b5876,#4e4376);-fx-text-fill: #ffffffe5;-fx-font-size: 12px;-fx-font-weight: bold;-fx-font-family: 'Jetbrains Mono';");
         ((Button) hBox2.getChildren().get(1)).setMinWidth(50);
 
         HBox hBox3 = new HBox();
         hBox3.getChildren().add(new Label());
+        ((Label) hBox3.getChildren().get(0)).setTextFill(Paint.valueOf("white"));
         hBox3.getChildren().add(new TextField());
+        ((TextField) hBox3.getChildren().get(hBox3.getChildren().size() - 1))
+                .setStyle("-fx-background-color: #3e4955;-fx-text-fill: white;");
         hBox3.setMargin(hBox3.getChildren().get(0), new Insets(0, 10, 0, 0));
         ((Label) hBox3.getChildren().get(0)).setMinWidth(210);
 
         HBox hBox4 = new HBox();
         hBox4.getChildren().add(new Label());
+        ((Label) hBox4.getChildren().get(0)).setTextFill(Paint.valueOf("white"));
         hBox4.getChildren().add(new TextField());
+        ((TextField) hBox4.getChildren().get(hBox4.getChildren().size() - 1))
+                .setStyle("-fx-background-color: #3e4955;-fx-text-fill: white;");
         hBox4.setMargin(hBox4.getChildren().get(0), new Insets(0, 10, 0, 0));
         ((Label) hBox4.getChildren().get(0)).setMinWidth(210);
 
@@ -2134,9 +2229,18 @@ public class MainPageController implements Initializable {
             ((Label) hBox4.getChildren().get(0)).setText("Ürün ID:");
 
             TableView<SatisDetay> tableView = new TableView<SatisDetay>();
+            tableView.setStyle(
+                    "    -fx-background-color: #434851;-fx-color: #434851;-fx-selection-bar: #5c6470;-fx-selection-bar-non-focused: #4c515c;");
             TableColumn<SatisDetay, Integer> kol1 = new TableColumn<SatisDetay, Integer>("satis_id");
+            kol1.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
             TableColumn<SatisDetay, Integer> kol2 = new TableColumn<SatisDetay, Integer>("miktar");
+            kol2.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
             TableColumn<SatisDetay, Integer> kol3 = new TableColumn<SatisDetay, Integer>("urun_id");
+            kol3.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
+
             kol1.setText("Satış ID");
             kol2.setText("Miktar");
             kol3.setText("Ürün ID");
@@ -2167,9 +2271,17 @@ public class MainPageController implements Initializable {
             ((Label) hBox4.getChildren().get(0)).setText("Miktar:");
 
             TableView<SatinAlimDetay> tableView = new TableView<SatinAlimDetay>();
+            tableView.setStyle(
+                    "    -fx-background-color: #434851;-fx-color: #434851;-fx-selection-bar: #5c6470;-fx-selection-bar-non-focused: #4c515c;");
             TableColumn<SatinAlimDetay, Integer> kol1 = new TableColumn<SatinAlimDetay, Integer>("satin_alim_id");
             TableColumn<SatinAlimDetay, Integer> kol2 = new TableColumn<SatinAlimDetay, Integer>("kumas_id");
             TableColumn<SatinAlimDetay, Integer> kol3 = new TableColumn<SatinAlimDetay, Integer>("miktar");
+            kol1.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
+            kol2.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
+            kol3.setStyle(
+                    "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
             kol1.setText("Satın Alım ID");
             kol2.setText("Kumaş ID");
             kol3.setText("Miktar");
