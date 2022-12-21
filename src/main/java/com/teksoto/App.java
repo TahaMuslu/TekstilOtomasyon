@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -18,6 +19,8 @@ public class App extends Application {
         scene = new Scene(loadFXML("MainPage"), 1200, 800);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setScene(scene);
+        stage.setTitle("Teksoto");
+        stage.getIcons().add(new Image("file:src/main/resources/com/assets/data-processing.png"));
         stage.show();
     }
 

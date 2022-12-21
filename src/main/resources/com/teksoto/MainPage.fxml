@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -18,49 +19,49 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane focusTraversable="true" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teksoto.MainPageController">
+<BorderPane focusTraversable="true" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" styleClass="main-background" stylesheets="@design.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.teksoto.MainPageController">
    <left>
-      <VBox alignment="TOP_CENTER" styleClass="light-black" stylesheets="@design.css" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" styleClass="side-menu" stylesheets="@design.css" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="personellerButton" mnemonicParsing="false" onAction="#personellerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Personeller">
+            <Button fx:id="personellerButton" mnemonicParsing="false" onAction="#personellerButtonAction" prefHeight="40.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Personeller">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="kumaslarButton" mnemonicParsing="false" onAction="#kumaslarButtonAction" prefHeight="40.0" prefWidth="120.0" text="Kumaşlar">
+            <Button fx:id="kumaslarButton" mnemonicParsing="false" onAction="#kumaslarButtonAction" prefHeight="40.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Kumaşlar">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" />
                </VBox.margin></Button>
-            <Button fx:id="urunlerButton" mnemonicParsing="false" onAction="#urunlerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Ürünler">
+            <Button fx:id="urunlerButton" mnemonicParsing="false" onAction="#urunlerButtonAction" prefHeight="40.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Ürünler">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="alimsatimlarButton" mnemonicParsing="false" onAction="#alimsatimlarButtonAction" prefHeight="40.0" prefWidth="120.0" text="Alım Satımlar">
+            <Button fx:id="alimsatimlarButton" mnemonicParsing="false" onAction="#alimsatimlarButtonAction" prefHeight="40.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Alım Satımlar">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="musterilervenakliyecilerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#musterilervenakliyecilerButtonAction" prefHeight="60.0" prefWidth="120.0" text="Müşteriler ve Nakliyeciler" textAlignment="CENTER" wrapText="true">
+            <Button fx:id="musterilervenakliyecilerButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#musterilervenakliyecilerButtonAction" prefHeight="60.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Müşteriler ve Nakliyeciler" textAlignment="CENTER" wrapText="true">
                <VBox.margin>
                   <Insets bottom="30.0" left="30.0" right="30.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="tedarikcilerButton" mnemonicParsing="false" onAction="#tedarikcilerButtonAction" prefHeight="40.0" prefWidth="120.0" text="Tedarikciler">
+            <Button fx:id="tedarikcilerButton" mnemonicParsing="false" onAction="#tedarikcilerButtonAction" prefHeight="40.0" prefWidth="120.0" styleClass="side-button" stylesheets="@design.css" text="Tedarikciler">
                <VBox.margin>
                   <Insets bottom="30.0" />
                </VBox.margin></Button>
-            <Button fx:id="ekleButton" mnemonicParsing="false" onAction="#ekleAction" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: green;" text="Ekle">
+            <Button fx:id="ekleButton" mnemonicParsing="false" onAction="#ekleAction" prefHeight="40.0" prefWidth="120.0" styleClass="ekle-button" stylesheets="@design.css" text="Ekle">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="silButton" mnemonicParsing="false" onAction="#silAction" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: red;" text="Sil">
+            <Button fx:id="silButton" mnemonicParsing="false" onAction="#silAction" prefHeight="40.0" prefWidth="120.0" styleClass="sil-button" stylesheets="@design.css" text="Sil">
                <VBox.margin>
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Button>
-            <Button fx:id="guncelleButton" mnemonicParsing="false" onAction="#guncelleAction" prefHeight="40.0" prefWidth="120.0" style="-fx-background-color: yellow;" text="Güncelle" />
+            <Button fx:id="guncelleButton" mnemonicParsing="false" onAction="#guncelleAction" prefHeight="40.0" prefWidth="120.0" styleClass="guncelle-button" stylesheets="@design.css" text="Güncelle" />
          </children>
          <BorderPane.margin>
             <Insets />
@@ -68,7 +69,7 @@
       </VBox>
    </left>
    <top>
-      <HBox fx:id="topBar" alignment="CENTER_LEFT" onMouseDragged="#stageDrag" onMousePressed="#stagePressed" prefHeight="75.0" prefWidth="774.0" styleClass="dark-black" stylesheets="@design.css" BorderPane.alignment="CENTER">
+      <HBox fx:id="topBar" alignment="CENTER_LEFT" onMouseDragged="#stageDrag" onMousePressed="#stagePressed" prefHeight="75.0" prefWidth="774.0" styleClass="top-menu" stylesheets="@design.css" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                <HBox.margin>
@@ -78,15 +79,20 @@
                   <Image url="@../assets/computer.png" />
                </image>
             </ImageView>
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textFill="#ffd900" HBox.hgrow="ALWAYS">
+            <Label fx:id="menuTitle" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="menu-title" text="Müşteriler Tablosu" textFill="#a93a3a" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="48.0" />
                </font>
             </Label>
-            <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#shutdown" style="-fx-background-radius: 15;" text="X" HBox.hgrow="ALWAYS">
+            <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#gelirAnaliziAction" styleClass="side-button" stylesheets="@design.css" text="Gelir Analizi">
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </Button>
+            <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#shutdown" styleClass="close-button" stylesheets="@design.css" text="X" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="100.0" right="10.0" />
                </HBox.margin>
@@ -98,9 +104,9 @@
       </HBox>
    </top>
    <center>
-      <StackPane maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" BorderPane.alignment="CENTER">
+      <StackPane maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" styleClass="stack-menu" stylesheets="@design.css" BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="personellerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+            <TableView fx:id="personellerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" styleClass="table" stylesheets="@design.css" visible="false">
               <columns>
                 <TableColumn fx:id="p_id" editable="false" prefWidth="-1.0" text="ID" />
                   <TableColumn fx:id="p_ad" editable="false" prefWidth="-1.0" text="Ad" />
@@ -119,7 +125,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TableView fx:id="kumaslarTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+            <TableView fx:id="kumaslarTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" styleClass="table" stylesheets="@design.css" visible="false">
                <columns>
                   <TableColumn fx:id="k_id" prefWidth="75.0" text="ID" />
                   <TableColumn fx:id="k_ad" prefWidth="75.0" text="Kumaş Adı" />
@@ -131,7 +137,7 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TableView fx:id="urunlerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+            <TableView fx:id="urunlerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" styleClass="table" stylesheets="@design.css" visible="false">
                <columns>
                   <TableColumn fx:id="u_id" prefWidth="75.0" text="ID" />
                   <TableColumn fx:id="u_ad" prefWidth="75.0" text="Ürün Adı" />
@@ -144,13 +150,13 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <TabPane fx:id="alimsatimlarTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
+            <TabPane fx:id="alimsatimlarTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" stylesheets="@design.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
                <tabs>
                   <Tab fx:id="satimlarTab" text="Satışlar">
                      <content>
                         <ScrollPane>
                            <content>
-                              <Accordion fx:id="satimlarAccordion" minHeight="618.0" minWidth="1020.0" />
+                              <Accordion fx:id="satimlarAccordion" minHeight="618.0" minWidth="1020.0" stylesheets="@design.css" />
                            </content>
                         </ScrollPane>
                      </content>
@@ -159,20 +165,20 @@
                      <content>
                         <ScrollPane prefHeight="200.0" prefWidth="200.0">
                            <content>
-                              <Accordion fx:id="alimlarAccordion" minHeight="618.0" minWidth="1020.0" />
+                              <Accordion fx:id="alimlarAccordion" minHeight="618.0" minWidth="1020.0" stylesheets="@design.css" />
                            </content>
                         </ScrollPane>
                      </content>
                   </Tab>
                </tabs>
             </TabPane>
-            <TabPane fx:id="musterilervenakliyecilerTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
+            <TabPane fx:id="musterilervenakliyecilerTab" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" stylesheets="@design.css" tabClosingPolicy="UNAVAILABLE" tabMaxHeight="25.0" tabMaxWidth="200.0" tabMinHeight="25.0" tabMinWidth="200.0" visible="false">
                <tabs>
                   <Tab fx:id="musterilerTab" onSelectionChanged="#musterilerAction" text="Müşteriler">
                      <content>
                         <Pane>
                            <children>
-                              <TableView fx:id="musterilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="618.0" minWidth="1020.0">
+                              <TableView fx:id="musterilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="618.0" minWidth="1020.0" styleClass="table" stylesheets="@design.css">
                                  <columns>
                                     <TableColumn fx:id="m_id" prefWidth="75.0" text="ID" />
                                     <TableColumn fx:id="m_ad" prefWidth="75.0" text="Ad" />
@@ -196,7 +202,7 @@
                      <content>
                         <Pane>
                            <children>
-                              <TableView fx:id="nakliyecilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="618.0" minWidth="1020.0">
+                              <TableView fx:id="nakliyecilerTablo" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="618.0" minWidth="1020.0" styleClass="table" stylesheets="@design.css">
                                  <columns>
                                     <TableColumn fx:id="n_id" prefWidth="75.0" text="ID" />
                                     <TableColumn fx:id="n_sirketAd" prefWidth="75.0" text="Şirket Adı" />
@@ -212,7 +218,7 @@
                   </Tab>
                </tabs>
             </TabPane>
-            <TableView fx:id="tedarikcilerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" visible="false">
+            <TableView fx:id="tedarikcilerTablo" maxHeight="650.0" maxWidth="1020.0" minHeight="650.0" minWidth="1020.0" prefHeight="650.0" prefWidth="1020.0" styleClass="table" stylesheets="@design.css" visible="false">
                <columns>
                   <TableColumn fx:id="t_id" prefWidth="75.0" text="ID" />
                   <TableColumn fx:id="t_sirketAd" prefWidth="75.0" text="Şirket Adı" />
@@ -226,6 +232,61 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <TabPane fx:id="gelirAnalizi" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+              <tabs>
+                <Tab text="Gelir Tahmini">
+                     <content>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                     </content>
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="393.0" fitWidth="1020.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/tahmin.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                </Tab>
+                <Tab text="Günlere Göre Satış">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="647.0" fitWidth="777.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/gun.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                </Tab>
+                  <Tab text="Aylara Göre Satış">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="624.0" fitWidth="782.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/ay.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
          </children>
       </StackPane>
    </center>

@@ -1,4 +1,9 @@
 /target/classes/.DS_Store
 /target/classes/com/teksoto
+<<<<<<< HEAD
 .idea
 .vscode
+=======
+.vscode
+.idea
+>>>>>>> ui

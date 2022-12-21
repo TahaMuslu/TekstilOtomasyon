@@ -1,9 +1,277 @@
-.light-black {
-    -fx-background-color: #282828;
+.main-background {
+    -fx-background-color: #EEEEEE;
     -fx-text-fill: #ffffff;
 }
 
-.dark-black {
-    -fx-background-color: #1E1E1E;
+.side-menu {
+    -fx-background-color: #34383f;
     -fx-text-fill: #ffffff;
+}
+
+.stack-menu {
+    -fx-background-color: #434851;
+    -fx-text-fill: #ffffff;
+}
+
+.top-menu {
+    -fx-background-color: #222831;
+    -fx-text-fill: #ffffff;
+}
+
+.side-button {
+    -fx-background-color: linear-gradient(to right,
+            #29323c,
+            #485563,
+            #2b5876,
+            #4e4376);
+    -fx-text-fill: #ffffffe5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Jetbrains Mono";
+}
+
+.side-button:hover {
+    -fx-background-color: linear-gradient(to right,
+            #506175,
+            #5a6b7c,
+            #377197,
+            #67589a);
+    -fx-text-fill: #ffffff;
+}
+
+.side-button:pressed {
+    -fx-background-color: linear-gradient(to right,
+            #252d36,
+            #3e4955,
+            #244a63,
+            #413862);
+    -fx-text-fill: #ffffffc9;
+}
+
+.table-column {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-border-width: 2px;
+    -fx-border-color: linear-gradient(to right,
+            #448cbc,
+            #7c6aba);
+}
+
+.table-row-cell {
+    -fx-background-color: #434851;
+    -fx-color: #01575c;
+    -fx-text-fill: #ffffffe5;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #59606c;
+    -fx-color: #01848b;
+}
+
+.table-row-cell:pressed {
+    -fx-background-color: #32363d;
+    -fx-color: #014346;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: linear-gradient(to right,
+            #448cbc,
+            #7c6aba);
+}
+
+.table {
+    -fx-background-color: #434851;
+    -fx-color: #434851;
+    -fx-selection-bar: #5c6470;
+    -fx-selection-bar-non-focused: #4c515c;
+}
+
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: linear-gradient(to right,
+            #448cbc,
+            #7c6aba);
+
+}
+
+.table .filler {
+    -fx-background-color: #434851;
+}
+
+.tab {
+    -fx-background-color: #656c79;
+}
+
+.tab .tab-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #252426;
+}
+
+.tab:selected {
+    -fx-background-color: #7b87a0;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-color: #434851;
+    -fx-background-color: #434851;
+}
+
+.accordion {
+    -fx-background-color: #434851;
+}
+
+.titled-pane {
+    -fx-color: #434851;
+    -fx-text-fill: #ffffff;
+}
+
+.titled-pane:hover {
+    -fx-background-color: #535964;
+}
+
+.titled-pane .title:hover {
+    -fx-background-color: #535964;
+}
+
+.titled-pane .title:pressed {
+    -fx-background-color: #373b42;
+}
+
+.titled-pane .title:selected {
+    -fx-background-color: #5f6672;
+}
+
+.menu-title {
+    -fx-font-weight: bold;
+    -fx-font-family: "Georgia";
+    -fx-font-size: 48px;
+    -fx-text-fill: #ffc400;
+}
+
+.close-button {
+    -fx-background-radius: 15px;
+    -fx-background-color: #222831;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: stretch;
+    -fx-border-radius: 15px;
+    -fx-border-color: linear-gradient(to top,
+            #2e3642,
+            #3d7683,
+            #00d0ff);
+    -fx-text-fill: linear-gradient(to top,
+            #222831,
+            #3d7683,
+            #00d0ff);
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Jetbrains Mono";
+}
+
+.close-button:hover {
+    -fx-background-color: linear-gradient(to top,
+            #222831,
+            #5d6d85);
+}
+
+.close-button:pressed {
+    -fx-background-color: #1e232b;
+    -fx-border-color: linear-gradient(to top,
+            #29313c,
+            #396d79,
+            #02b9e2);
+    -fx-text-fill: linear-gradient(to top,
+            #29313c,
+            #396d79,
+            #02b9e2);
+}
+
+.ekle-button {
+    -fx-background-color: linear-gradient(to right,
+            #323e2f,
+            #366439,
+            #269144,
+            #31cb0a);
+    -fx-text-fill: #ffffffe5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Jetbrains Mono";
+}
+
+.ekle-button:hover {
+    -fx-background-color: linear-gradient(to right,
+            #3e4d3a,
+            #3d7241,
+            #2aa24c,
+            #36dc0c);
+    -fx-text-fill: #ffffff;
+}
+
+.ekle-button:pressed {
+    -fx-background-color: linear-gradient(to right,
+            #273024,
+            #2f5531,
+            #22833e,
+            #2fbf0b);
+    -fx-text-fill: #ffffffc9;
+}
+
+.sil-button {
+    -fx-background-color: linear-gradient(to right,
+            #413131,
+            #653b3b,
+            #912626,
+            #cb0a0a);
+    -fx-text-fill: #ffffffe5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Jetbrains Mono";
+}
+
+.sil-button:hover {
+    -fx-background-color: linear-gradient(to right,
+            #4e3b3b,
+            #714242,
+            #9e2929,
+            #d50b0b);
+    -fx-text-fill: #ffffff;
+}
+
+.sil-button:pressed {
+    -fx-background-color: linear-gradient(to right,
+            #362929,
+            #553232,
+            #852222,
+            #bf0a0a);
+    -fx-text-fill: #ffffffcf;
+}
+
+.guncelle-button {
+    -fx-background-color: linear-gradient(to right,
+            #414031,
+            #7a7340,
+            #8e9126,
+            #cbc80a);
+    -fx-text-fill: #ffffffe5;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Jetbrains Mono";
+}
+
+.guncelle-button:hover {
+    -fx-background-color: linear-gradient(to right,
+            #4e4c3b,
+            #847c46,
+            #9a9e29,
+            #d7d40a);
+    -fx-text-fill: #ffffff;
+}
+
+.guncelle-button:pressed {
+    -fx-background-color: linear-gradient(to right,
+            #343328,
+            #6e683a,
+            #808322,
+            #bdba0a);
+    -fx-text-fill: #ffffffcb;
 }
