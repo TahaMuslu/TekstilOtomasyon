@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -78,14 +79,19 @@
                   <Image url="@../assets/computer.png" />
                </image>
             </ImageView>
-            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textFill="#ffd900" HBox.hgrow="ALWAYS">
+            <Label fx:id="menuTitle" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="menu-title" text="Müşteriler Tablosu" textFill="#a93a3a" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font name="System Bold" size="48.0" />
                </font>
             </Label>
+            <Button minHeight="30.0" minWidth="100.0" mnemonicParsing="false" onAction="#gelirAnaliziAction" styleClass="side-button" stylesheets="@design.css" text="Gelir Analizi">
+               <HBox.margin>
+                  <Insets right="30.0" />
+               </HBox.margin>
+            </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="30.0" minHeight="30.0" minWidth="30.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#shutdown" styleClass="close-button" stylesheets="@design.css" text="X" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets bottom="100.0" right="10.0" />
@@ -226,6 +232,61 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
+            <TabPane fx:id="gelirAnalizi" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" visible="false">
+              <tabs>
+                <Tab text="Gelir Tahmini">
+                     <content>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                     </content>
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="393.0" fitWidth="1020.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/tahmin.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                </Tab>
+                <Tab text="Günlere Göre Satış">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="647.0" fitWidth="777.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/gun.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                </Tab>
+                  <Tab text="Aylara Göre Satış">
+                     <content>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <ImageView fitHeight="624.0" fitWidth="782.0" pickOnBounds="true" preserveRatio="true">
+                                 <viewport>
+                                    <Rectangle2D />
+                                 </viewport>
+                                 <image>
+                                    <Image url="@../assets/ay.jpeg" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </VBox>
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
          </children>
       </StackPane>
    </center>

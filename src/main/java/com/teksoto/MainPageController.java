@@ -51,6 +51,10 @@ public class MainPageController implements Initializable {
     @FXML
     private Button tedarikcilerButton;
 
+    // Menü Başlık
+    @FXML
+    private Label menuTitle;
+
     // Menü Tabları ve Tablolar
     @FXML
     private TableView<Personel> personellerTablo;
@@ -76,6 +80,8 @@ public class MainPageController implements Initializable {
     private TabPane musterilervenakliyecilerTab;
     @FXML
     private TableView<Tedarikciler> tedarikcilerTablo;
+    @FXML
+    private TabPane gelirAnalizi;
 
     // Müşteriler Tablosu
     @FXML
@@ -192,6 +198,7 @@ public class MainPageController implements Initializable {
     private void personellerButtonAction() {
         tabloKapat();
         personellerTablo.setVisible(true);
+        menuTitle.setText("Personeller");
 
         ekleButton.setText("Personel Ekle");
         silButton.setText("Personel Sil");
@@ -243,6 +250,7 @@ public class MainPageController implements Initializable {
     // Kumaşlar Tablosu
     @FXML
     private void kumaslarButtonAction() {
+        menuTitle.setText("Kumaşlar");
         tabloKapat();
         kumaslarTablo.setVisible(true);
 
@@ -282,6 +290,7 @@ public class MainPageController implements Initializable {
     // Ürünler Tablosu
     @FXML
     private void urunlerButtonAction() {
+        menuTitle.setText("Ürünler");
         tabloKapat();
         urunlerTablo.setVisible(true);
 
@@ -323,6 +332,7 @@ public class MainPageController implements Initializable {
     // Alım-Satım Tablosu
     @FXML
     private void alimsatimlarButtonAction() {
+        menuTitle.setText("Alım-Satım");
         tabloKapat();
         alimsatimlarTab.setVisible(true);
         satimlarOlustur();
@@ -528,6 +538,7 @@ public class MainPageController implements Initializable {
 
     @FXML
     private void musterilerAction() {
+        menuTitle.setText("Müşteriler");
         ekleButton.setText("Müşteri Ekle");
         silButton.setText("Müşteri Sil");
         guncelleButton.setText("Müşteri Guncelle");
@@ -535,6 +546,7 @@ public class MainPageController implements Initializable {
 
     @FXML
     private void nakliyecilerAction() {
+        menuTitle.setText("Nakliyeciler");
         ekleButton.setText("Nakliyeci Ekle");
         silButton.setText("Nakliyeci Sil");
         guncelleButton.setText("Nakliyeci Guncelle");
@@ -543,6 +555,7 @@ public class MainPageController implements Initializable {
     // Tedarikçiler Tablosu
     @FXML
     private void tedarikcilerButtonAction() {
+        menuTitle.setText("Tedarikçiler");
         tabloKapat();
         tedarikcilerTablo.setVisible(true);
 
@@ -581,6 +594,14 @@ public class MainPageController implements Initializable {
             e.printStackTrace();
             e.getCause();
         }
+    }
+
+    // Gelir Analizi
+    @FXML
+    private void gelirAnaliziAction() {
+        tabloKapat();
+        buttonKapat();
+        gelirAnalizi.setVisible(true);
     }
 
     // Ekleme İşlemleri
@@ -1990,6 +2011,7 @@ public class MainPageController implements Initializable {
         alimsatimlarTab.setVisible(false);
         musterilervenakliyecilerTab.setVisible(false);
         tedarikcilerTablo.setVisible(false);
+        gelirAnalizi.setVisible(false);
     }
 
     // Buttonları Kapatma
@@ -2229,8 +2251,9 @@ public class MainPageController implements Initializable {
             ((Label) hBox4.getChildren().get(0)).setText("Ürün ID:");
 
             TableView<SatisDetay> tableView = new TableView<SatisDetay>();
+            tableView.getStyleClass().add("table-view");
             tableView.setStyle(
-                    "    -fx-background-color: #434851;-fx-color: #434851;-fx-selection-bar: #5c6470;-fx-selection-bar-non-focused: #4c515c;");
+                    " -fx-background-color: #434851;-fx-color: #434851;-fx-selection-bar: #5c6470;-fx-selection-bar-non-focused: #4c515c;");
             TableColumn<SatisDetay, Integer> kol1 = new TableColumn<SatisDetay, Integer>("satis_id");
             kol1.setStyle(
                     "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
@@ -2240,7 +2263,6 @@ public class MainPageController implements Initializable {
             TableColumn<SatisDetay, Integer> kol3 = new TableColumn<SatisDetay, Integer>("urun_id");
             kol3.setStyle(
                     "-fx-text-fill: rgb(255, 255, 255);-fx-border-width: 2px;-fx-border-color: linear-gradient(to right,#448cbc,#7c6aba);");
-
             kol1.setText("Satış ID");
             kol2.setText("Miktar");
             kol3.setText("Ürün ID");
@@ -2295,6 +2317,7 @@ public class MainPageController implements Initializable {
 
             vBox.getChildren().add(tableView);
             ((Button) hBox2.getChildren().get(1)).setOnMouseClicked(new EventHandler<MouseEvent>() {
+
                 @Override
                 public void handle(MouseEvent event) {
                     tableView.getItems().add(new SatinAlimDetay(0,
