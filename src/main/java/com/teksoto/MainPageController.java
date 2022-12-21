@@ -599,6 +599,7 @@ public class MainPageController implements Initializable {
     // Gelir Analizi
     @FXML
     private void gelirAnaliziAction() {
+        menuTitle.setText("Gelir Analizi");
         tabloKapat();
         buttonKapat();
         gelirAnalizi.setVisible(true);
@@ -2095,6 +2096,7 @@ public class MainPageController implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        menuTitle.setText("Tekstil Otomasyonu");
         tabloKapat();
         buttonKapat();
 

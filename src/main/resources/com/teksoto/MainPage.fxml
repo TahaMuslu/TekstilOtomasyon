@@ -79,7 +79,7 @@
                   <Image url="@../assets/computer.png" />
                </image>
             </ImageView>
-            <Label fx:id="menuTitle" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="menu-title" text="Müşteriler Tablosu" textFill="#a93a3a" HBox.hgrow="ALWAYS">
+            <Label fx:id="menuTitle" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="menu-title" text="Tekstil Otomasyonu" textFill="#a93a3a" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
