@@ -93,6 +93,12 @@
 
 }
 
+.table-view .column-header .label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
 .table .filler {
     -fx-background-color: #434851;
 }

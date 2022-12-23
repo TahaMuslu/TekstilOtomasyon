@@ -2253,7 +2253,9 @@ public class MainPageController implements Initializable {
             ((Label) hBox4.getChildren().get(0)).setText("Ürün ID:");
 
             TableView<SatisDetay> tableView = new TableView<SatisDetay>();
+            tableView.getStylesheets().add(getClass().getResource("/com/teksoto/design.css").toExternalForm());
             tableView.getStyleClass().add("table-view");
+
             tableView.setStyle(
                     " -fx-background-color: #434851;-fx-color: #434851;-fx-selection-bar: #5c6470;-fx-selection-bar-non-focused: #4c515c;");
             TableColumn<SatisDetay, Integer> kol1 = new TableColumn<SatisDetay, Integer>("satis_id");
