@@ -154,7 +154,7 @@
                <tabs>
                   <Tab fx:id="satimlarTab" text="Satışlar">
                      <content>
-                        <ScrollPane>
+                        <ScrollPane styleClass="titled-pane">
                            <content>
                               <Accordion fx:id="satimlarAccordion" minHeight="618.0" minWidth="1020.0" stylesheets="@design.css" />
                            </content>
@@ -163,7 +163,7 @@
                   </Tab>
                   <Tab fx:id="alimlarTab" text="Satın Alımlar">
                      <content>
-                        <ScrollPane prefHeight="200.0" prefWidth="200.0">
+                        <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="titled-pane">
                            <content>
                               <Accordion fx:id="alimlarAccordion" minHeight="618.0" minWidth="1020.0" stylesheets="@design.css" />
                            </content>

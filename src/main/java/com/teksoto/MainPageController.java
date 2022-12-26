@@ -345,6 +345,8 @@ public class MainPageController implements Initializable {
     }
 
     private void satimlarOlustur() {
+        // Önceki Tabloları Temizle
+        satimlarAccordion.getPanes().clear();
         // Satimlar Tablosu
         ObservableList<Satislar> satislarList = FXCollections.observableArrayList();
         ObservableList<SatisDetay> satisDetayList = FXCollections.observableArrayList();
@@ -407,6 +409,8 @@ public class MainPageController implements Initializable {
     }
 
     private void alimlarOlustur() {
+        // Önceki Tabloları Temizle
+        alimlarAccordion.getPanes().clear();
         // Satimlar Tablosu
         ObservableList<SatinAlimlar> satinAlimlarList = FXCollections.observableArrayList();
         ObservableList<SatinAlimDetay> satinAlimDetayList = FXCollections.observableArrayList();

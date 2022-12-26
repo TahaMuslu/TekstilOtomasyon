@@ -131,6 +131,10 @@
     -fx-text-fill: #ffffff;
 }
 
+.titled-pane .filler {
+    -fx-background-color: #434851;
+}
+
 .titled-pane:hover {
     -fx-background-color: #535964;
 }
